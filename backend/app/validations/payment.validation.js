@@ -1,4 +1,3 @@
-// validators/payment.schema.js
 import Joi from "joi";
 
 export const paySchema = Joi.object({

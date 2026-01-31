@@ -6,7 +6,7 @@ import { ArrowRightIcon } from "@/shared/ui/icons/ArrowRightIcon";
 import { TimeBlock } from "@/shared/ui/blocks/TimeBlock";
 import { DetailsButton } from "@/shared/ui/DetailsButton";
 import Economy from "./blocks/Economy";
-
+import Business from "./blocks/Business";
 
 interface TicketProps {
   className?: string;
@@ -23,7 +23,7 @@ interface ticketsType {
 function Ticket({ className }: TicketProps) {
   return (
     <div className={cn("", className)}>
-      <div className="w-270.5 flex outline-1 outline-[rgb(238,238,240)] rounded-lg transition-all duration-300 hover:outline-[rgb(164,134,86)]">
+      <div className="w-270.5 flex justify-between outline-1 outline-[rgb(238,238,240)] rounded-lg transition-all duration-300 hover:outline-[rgb(164,134,86)]">
         <div className="h-38 bg-white px-6 py-4">
           <div className="flex flex-col">
             <div className="flex gap-20">
@@ -53,7 +53,10 @@ function Ticket({ className }: TicketProps) {
           </div>
         </div>
 
-        <Economy />
+        <div className="flex">
+          <Economy />
+          <Business />
+        </div>
       </div>
     </div>
   );

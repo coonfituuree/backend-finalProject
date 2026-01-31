@@ -3,13 +3,12 @@ import jwt from "jsonwebtoken";
 import transporter from "../config/nodemailer.js";
 import userModel from "../models/user.model.js";
 
-// маленький хелпер, чтобы не копировать cookie options
 const setAuthCookie = (res, token) => {
   res.cookie("token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-    maxAge: 24 * 60 * 60 * 1000, // 1 day
+    maxAge: 24 * 60 * 60 * 1000, 
   });
 };
 
@@ -196,18 +195,15 @@ export const verifyEmail = async (req, res) => {
 };
 
 export const isAuthenticated = (req, res) => {
-  // если authMiddleware пропустил — значит ок
   return res.json({ success: true });
 };
 
 export const sendResetOtp = async (req, res) => {
-  // Joi должен валидировать email
   const { email } = req.body;
 
   try {
     const user = await userModel.findOne({ email });
     if (!user) {
-      // можно вернуть 200 чтобы не палить наличие пользователя, но оставлю 404 как у тебя по смыслу
       return res
         .status(404)
         .json({ success: false, message: "User not found" });
@@ -236,7 +232,6 @@ export const sendResetOtp = async (req, res) => {
 };
 
 export const resetPassword = async (req, res) => {
-  // Joi должен валидировать email/otp/newPassword
   const { email, otp, newPassword } = req.body;
 
   try {

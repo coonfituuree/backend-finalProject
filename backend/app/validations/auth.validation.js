@@ -11,6 +11,7 @@ export const registerSchema = Joi.object({
     )
     .required()
     .trim(),
+    
   firstName: Joi.string()
     .pattern(/^[A-Za-zА-Яа-я]+$/)
     .required()

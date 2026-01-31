@@ -1,4 +1,3 @@
-// model/payment.model.js
 import mongoose from "mongoose";
 
 const paymentSchema = new mongoose.Schema(
@@ -7,7 +6,7 @@ const paymentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "booking",
       required: true,
-      unique: true, // один payment на один booking
+      unique: true, 
     },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
 
@@ -18,7 +17,7 @@ const paymentSchema = new mongoose.Schema(
     expMonth: { type: Number, required: true },
     expYear: { type: Number, required: true },
 
-    status: { type: Boolean, default: false }, // true = paid
+    status: { type: Boolean, default: false }, 
   },
   { timestamps: true },
 );

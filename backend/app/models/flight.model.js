@@ -12,7 +12,7 @@ const flightSchema = new mongoose.Schema({
   arrivalTime: { type: String, required: true },
   flightDuration: { type: String, required: true },
   numberOfTransfers: { type: String, required: true },
-  EconomPrice: { type: Number, required: true },
+  economyPrice: { type: Number, required: true },
   businessPrice: { type: Number, required: true },
   createdAt: { type: Date },
 });

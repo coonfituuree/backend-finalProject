@@ -9,6 +9,8 @@ import userRouter from "./app/routes/user.routes.js";
 import flightRouter from "./app/routes/flight.routes.js";
 import bookingRouter from "./app/routes/booking.routes.js";
 import paymentRouter from "./app/routes/payment.routes.js";
+import adminMiddleware from "./app/middlewares/admin.middleware.js";
+import adminRouter from "./app/routes/admin.routes.js";
 
 dotenv.config();
 
@@ -16,9 +18,15 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 connectDB();
+
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ credentials: true }));
+app.use(
+  cors({
+    origin: "http://localhost:9999", // 👈 твой фронт
+    credentials: true, // 👈 разрешаем cookies
+  }),
+);
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && "body" in err) {
     return res.status(400).json({ success: false, message: "Invalid JSON" });
@@ -33,5 +41,6 @@ app.use("/api/user", userRouter);
 app.use("/api/flights", flightRouter);
 app.use("/api/bookings", bookingRouter);
 app.use("/api/payments", paymentRouter);
+app.use("/api/admin", adminRouter);
 
 app.listen(PORT, () => console.log(`Server running at ${PORT}`));

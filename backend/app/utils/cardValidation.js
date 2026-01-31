@@ -1,4 +1,3 @@
-// utils/cardValidation.js
 export const isValidLuhn = (numStr) => {
   let sum = 0;
   let shouldDouble = false;
