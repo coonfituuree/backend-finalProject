@@ -23,7 +23,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${montserrat.variable} antialiased min-h-screen`}>
-        <SearchSection />
         <main>{children}</main>
         <Footer />
       </body>

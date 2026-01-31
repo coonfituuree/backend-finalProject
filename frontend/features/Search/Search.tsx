@@ -5,8 +5,14 @@ import Header from "../Header/Header";
 import Container from "@/shared/ui/Container";
 import { Search } from "lucide-react";
 
-function SearchSection() {
+interface SearchSectionProps {
+  onSearch?: (from: string, to: string) => void;
+}
+
+function SearchSection({ onSearch }: SearchSectionProps) {
   const [time, setTime] = useState("");
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
 
   useEffect(() => {
     const t = setInterval(() => {
@@ -15,6 +21,12 @@ function SearchSection() {
     return () => clearInterval(t);
   }, []);
 
+  const handleSearch = () => {
+    if (from && to && onSearch) {
+      onSearch(from, to);
+    }
+  };
+
   return (
     <section className="relative w-full overflow-hidden bg-black/30 pb-16">
       <video
@@ -22,7 +34,7 @@ function SearchSection() {
         muted
         loop
         playsInline
-        src="/video.mp4"
+        src="../video.mp4"
         className="absolute inset-0 w-full h-full object-cover -z-10"
       />
 
@@ -31,61 +43,42 @@ function SearchSection() {
 
         <div className="w-full flex flex-col gap-8 py-8">
           <div className="text-white text-4xl font-medium">
-            Good evening, where are we flying today?
+            Добрый вечер, куда мы летим сегодня?
           </div>
 
           <div className="flex flex-wrap gap-2 w-full">
             <div className="flex flex-1 gap-2">
               <div className="flex-1 bg-white px-3 py-4 rounded-l-2xl">
                 <label className="block text-sm font-medium text-gray-400">
-                  From:
+                  Откуда:
                 </label>
                 <input
                   className="w-full outline-none text-base py-2"
                   placeholder="Страна, город или аэропорт"
+                  value={from}
+                  onChange={(e) => setFrom(e.target.value)}
                 />
               </div>
               <div className="flex-1 bg-white px-3 py-4 rounded-r-2xl">
-                <label className="block text-sm text-gray-400">To:</label>
+                <label className="block text-sm text-gray-400">Куда:</label>
                 <input
                   className="w-full outline-none text-base py-2"
                   placeholder="Страна, город или аэропорт"
+                  value={to}
+                  onChange={(e) => setTo(e.target.value)}
                 />
               </div>
             </div>
 
-            <div className="flex gap-8">
-              <div className="flex gap-2 w-[320px]">
-                <div className="flex-1 bg-white p-4 rounded-l-2xl">
-                  <label className="block text-sm text-gray-400">Туда</label>
-                  <input type="date" className="w-full outline-none py-2" />
-                </div>
-                <div className="flex-1 bg-white p-4 rounded-r-2xl">
-                  <label className="block text-sm text-gray-400 ">
-                    Обратно
-                  </label>
-                  <input type="date" className="w-full outline-none py-2" />
-                </div>
-              </div>
-
-              <div className="w-50 bg-white p-4 rounded-2xl">
-                <label className="block text-sm text-gray-400">
-                  Пассажиры и класс
-                </label>
-                <input
-                  className="w-full outline-none py-2"
-                  placeholder="Количество пассажиров"
-                />
-              </div>
-            </div>
-
-            <button className="w-20 bg-[#242424] rounded-2xl flex items-center justify-center transition-all duration-300 cursor-pointer hover:opacity-80">
+            <button
+              onClick={handleSearch}
+              className="w-20 bg-[#242424] rounded-2xl flex items-center justify-center transition-all duration-300 cursor-pointer hover:opacity-80">
               <Search color="white" />
             </button>
           </div>
 
           <div className="flex justify-end text-white font-medium">
-            Tickets are valid for {time}
+            Билеты действительны до {time}
           </div>
         </div>
       </Container>

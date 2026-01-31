@@ -97,15 +97,15 @@ export const postFlightsBulk = async (req, res) => {
       }
     }
 
-    const flights = await flightsModel.insertMany(req.body, {
+    const result = await flightsModel.collection.insertMany(req.body, {
       ordered: false,
     });
 
     return res.status(201).json({
       success: true,
       message: "Flights created successfully",
-      insertedCount: flights.length,
-      data: flights,
+      insertedCount: result.insertedCount,
+      insertedIds: Object.values(result.insertedIds || {}),
     });
   } catch (err) {
     return res.status(500).json({
