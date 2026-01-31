@@ -50,6 +50,8 @@ export default function ProfilePage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  
+
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -225,11 +227,9 @@ export default function ProfilePage() {
                   </button>
 
                   {user.role === "admin" && (
-                    <Link
-                      href="/admin"
-                      className="flex-1 bg-purple-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-purple-700 transition text-center">
+                    <button className="flex-1 bg-purple-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-purple-700 transition" onClick={() => window.location.href = '/admin'}>
                       Админ-панель
-                    </Link>
+                    </button>
                   )}
 
                   <button

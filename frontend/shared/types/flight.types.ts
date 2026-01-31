@@ -8,6 +8,8 @@ export interface Flight {
   toAirportAbbreviation: string;
   operatedBy: string;
   flightNumber: string;
+  departureDate: string;
+  arrivalDate: string;
   airplaneType: string;
   departureTime: string;
   arrivalTime: string;

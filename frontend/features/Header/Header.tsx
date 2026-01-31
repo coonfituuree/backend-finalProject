@@ -12,7 +12,6 @@ function Header() {
     // Check if user is authenticated (you can use localStorage, cookies, or context)
     const checkAuth = async () => {
       try {
-        // This is a simple check - in production you'd validate with backend
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
           setUser(JSON.parse(storedUser));

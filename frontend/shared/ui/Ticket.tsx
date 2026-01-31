@@ -15,18 +15,6 @@ interface TicketProps {
 }
 
 function Ticket({ flight, className }: TicketProps) {
-  const safeDate = (value: unknown) => {
-    if (!value) return null;
-    const d = new Date(String(value));
-    return Number.isNaN(d.getTime()) ? null : d;
-  };
-
-  const formatTime = (value: unknown) => {
-    const d = safeDate(value);
-    if (!d) return "—";
-    return d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
-  };
-
   const formatPrice = (value: unknown) => {
     const n = typeof value === "number" ? value : Number(value);
     if (!Number.isFinite(n)) return 0; 
@@ -57,7 +45,7 @@ function Ticket({ flight, className }: TicketProps) {
           <div className="flex flex-col">
             <div className="flex gap-16">
               <div className="flex gap-14">
-                <TimeBlock time={formatTime(flight.departureTime)} code={fromAirportAbbreviation} />
+                <TimeBlock time={flight.departureTime} code={fromAirportAbbreviation} />
 
                 <div className="flex items-center self-start gap-2 whitespace-nowrap">
                   <MinusIcon className="w-6 h-6 fill-[rgb(152,162,179)]" />
@@ -69,8 +57,8 @@ function Ticket({ flight, className }: TicketProps) {
               </div>
 
               <div className="flex w-full items-start justify-between gap-14">
-                <TimeBlock time={formatTime(flight.arrivalTime)} code={toAirportAbbreviation} />
-                <DetailsButton />
+                <TimeBlock time={flight.arrivalTime} code={toAirportAbbreviation} />
+                <DetailsButton flight={flight} />
               </div>
             </div>
 

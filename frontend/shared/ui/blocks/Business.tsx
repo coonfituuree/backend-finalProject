@@ -36,7 +36,7 @@ function Business({ price }: BusinessProps) {
               <path d="M6.367 3.134a1 1 0 0 1 0 1.732L1.633 7.6a1 1 0 0 1-1.5-.866V1.267a1 1 0 0 1 1.5-.866l4.734 2.733z" />
             </svg>
 
-            <div className="text-sm text-white font-bold">
+            <div className="text-sm text-white font-bold whitespace-nowrap">
               {monthlyText} KZT <span className="font-medium">x 6 месяцев</span>
             </div>
           </div>

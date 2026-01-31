@@ -43,3 +43,26 @@ export const updateCurrentUser = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+export const Me = (req, res) => {
+  try {
+    // cookie name: "token" (поменяй если другое)
+    const token = req.cookies?.token;
+    if (!token)
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+
+    // payload должен содержать user info (id/email/role etc)
+    return res.json({
+      success: true,
+      user: {
+        id: payload.id,
+        email: payload.email,
+        role: payload.role,
+      },
+    });
+  } catch (e) {
+    return res.status(401).json({ success: false, message: "Unauthorized" });
+  }
+};
