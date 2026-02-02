@@ -15,7 +15,7 @@ export interface CreateBookingRequest {
 export interface Booking {
   _id: string;
   user: string;
-  flight: Flight;
+  flight: Flight | null;
   passengers: Passenger[];
   cabinClass: "economy" | "business";
   pricePerPassenger: number;

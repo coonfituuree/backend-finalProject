@@ -1,14 +1,27 @@
 "use client";
-import React, { useState } from "react";
+
+import React, { useEffect, useState } from "react";
 import { authApi } from "@/shared/api/auth.api";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/shared/store/auth.store";
+import { userApi } from "@/shared/api/user.api";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
   const router = useRouter();
+
+  const loginStore = useAuthStore((s) => s.login);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.replace("/");
+    }
+  }, [isAuthenticated, router]);
 
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [registerForm, setRegisterForm] = useState({
@@ -32,12 +45,31 @@ const Auth = () => {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setSuccess("");
+
     try {
-      const result = await authApi.login(loginForm);
+      const result = await authApi.login(loginForm); // result: AuthResponse
+
+      if (!result.success) {
+        throw new Error(result.message || "Login failed");
+      }
+
+      // ✅ подтягиваем реального пользователя
+      const me = await userApi.getCurrentUser(); // ожидаем { user: ... }
+
+      if (!me?.user) {
+        throw new Error("Cannot load current user");
+      }
+
+      
+      loginStore({
+        id: me.user._id,
+        username: me.user.username,
+        email: me.user.email,
+      });
+
       setSuccess("Успешно вошли в систему!");
-      setTimeout(() => {
-        router.push("/");
-      }, 1500);
+      router.replace("/");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Ошибка входа");
     } finally {
@@ -49,20 +81,21 @@ const Auth = () => {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setSuccess("");
+
     try {
       const result = await authApi.register(registerForm);
-      setSuccess("Регистрация успешна! Войдите в систему.");
-      setTimeout(() => {
-        setIsLogin(true);
-        setRegisterForm({
-          username: "",
-          email: "",
-          password: "",
-          firstName: "",
-          lastName: "",
-          phoneNumber: "",
-        });
-      }, 2000);
+
+      const u = (result as any)?.data?.user;
+
+      const userToStore = u
+        ? { id: u.id ?? u._id, username: u.username, email: u.email }
+        : { username: registerForm.username, email: registerForm.email };
+
+      loginStore(userToStore);
+
+      setSuccess("Регистрация успешна!");
+      router.replace("/");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Ошибка регистрации");
     } finally {
@@ -70,14 +103,16 @@ const Auth = () => {
     }
   };
 
+  if (isAuthenticated) return null;
+
   return (
     <div className="min-h-screen bg-[rgb(244,245,247)] flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl border border-gray-200 p-8 w-full max-w-md shadow-sm">
         <h1 className="text-3xl font-bold text-[rgb(28,43,79)] mb-2 text-center">
-          {isLogin ? "Вход" : "Регистрация"}
+          {isLogin ? "Sign In" : "Sign Up"}
         </h1>
         <p className="text-[rgb(80,98,112)] text-center mb-6 font-medium">
-          {isLogin ? "Добро пожаловать обратно" : "Создайте новый аккаунт"}
+          {isLogin ? "Welcome back!" : "Create a new account"}
         </p>
 
         {error && (
@@ -111,7 +146,7 @@ const Auth = () => {
 
             <div>
               <label className="block text-[rgb(28,43,79)] font-semibold mb-2 text-sm">
-                Пароль
+                Password
               </label>
               <input
                 type="password"
@@ -127,8 +162,8 @@ const Auth = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[linear-gradient(116.49deg,_rgb(28,43,79)_0%,_rgb(80,98,112)_100%)] text-white font-bold py-3 rounded-lg hover:opacity-90 transition disabled:opacity-50">
-              {loading ? "Вход..." : "Войти"}
+              className="w-full cursor-pointer bg-[linear-gradient(116.49deg,_rgb(28,43,79)_0%,_rgb(80,98,112)_100%)] text-white font-bold py-3 rounded-lg hover:opacity-90 transition disabled:opacity-50">
+              {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
         ) : (
@@ -136,7 +171,7 @@ const Auth = () => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-[rgb(28,43,79)] font-semibold mb-2 text-sm">
-                  Имя
+                  First Name
                 </label>
                 <input
                   type="text"
@@ -145,12 +180,12 @@ const Auth = () => {
                   onChange={handleRegisterChange}
                   required
                   className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-[rgb(164,134,86)] focus:ring-1 focus:ring-[rgb(164,134,86)] transition"
-                  placeholder="Иван"
+                  placeholder="Serkan"
                 />
               </div>
               <div>
                 <label className="block text-[rgb(28,43,79)] font-semibold mb-2 text-sm">
-                  Фамилия
+                  Last Name
                 </label>
                 <input
                   type="text"
@@ -159,14 +194,14 @@ const Auth = () => {
                   onChange={handleRegisterChange}
                   required
                   className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-[rgb(164,134,86)] focus:ring-1 focus:ring-[rgb(164,134,86)] transition"
-                  placeholder="Иванов"
+                  placeholder="Bolat"
                 />
               </div>
             </div>
 
             <div>
               <label className="block text-[rgb(28,43,79)] font-semibold mb-2 text-sm">
-                Имя пользователя
+                Username
               </label>
               <input
                 type="text"
@@ -175,7 +210,7 @@ const Auth = () => {
                 onChange={handleRegisterChange}
                 required
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-[rgb(164,134,86)] focus:ring-1 focus:ring-[rgb(164,134,86)] transition"
-                placeholder="ivanov_ivan"
+                placeholder="serkan_bolat"
               />
             </div>
 
@@ -196,7 +231,7 @@ const Auth = () => {
 
             <div>
               <label className="block text-[rgb(28,43,79)] font-semibold mb-2 text-sm">
-                Номер телефона
+                Phone Number
               </label>
               <input
                 type="tel"
@@ -211,7 +246,7 @@ const Auth = () => {
 
             <div>
               <label className="block text-[rgb(28,43,79)] font-semibold mb-2 text-sm">
-                Пароль
+                Password
               </label>
               <input
                 type="password"
@@ -228,18 +263,19 @@ const Auth = () => {
               type="submit"
               disabled={loading}
               className="w-full bg-[linear-gradient(116.49deg,_rgb(28,43,79)_0%,_rgb(80,98,112)_100%)] text-white font-bold py-3 rounded-lg hover:opacity-90 transition disabled:opacity-50">
-              {loading ? "Регистрация..." : "Зарегистрироваться"}
+              {loading ? "Signing up..." : "Sign Up"}
             </button>
           </form>
         )}
 
         <div className="mt-6 text-center">
           <p className="text-[rgb(80,98,112)] font-medium">
-            {isLogin ? "Нет аккаунта?" : "Уже есть аккаунт?"}{" "}
+            {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
             <button
               onClick={() => setIsLogin(!isLogin)}
-              className="text-[rgb(164,134,86)] font-bold hover:underline">
-              {isLogin ? "Регистрация" : "Вход"}
+              className="text-[rgb(164,134,86)] font-bold hover:underline cursor-pointer"
+              type="button">
+              {isLogin ? "Sign Up" : "Sign In"}
             </button>
           </p>
         </div>

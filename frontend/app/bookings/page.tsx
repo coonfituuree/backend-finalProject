@@ -16,6 +16,17 @@ export default function BookingsPage() {
     loadBookings();
   }, []);
 
+  const formatTime = (time: string | Date) => {
+    return new Date(time).toLocaleTimeString("ru-RU", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  const formatDate = (time: string | Date) => {
+    return new Date(time).toLocaleDateString("ru-RU");
+  };
+
   const loadBookings = async () => {
     setLoading(true);
     try {
@@ -53,17 +64,6 @@ export default function BookingsPage() {
     } finally {
       setCancelingId(null);
     }
-  };
-
-  const formatTime = (time: string) => {
-    return new Date(time).toLocaleTimeString("ru-RU", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
-
-  const formatDate = (time: string) => {
-    return new Date(time).toLocaleDateString("ru-RU");
   };
 
   const getStatusBadge = (status: string) => {
@@ -193,54 +193,59 @@ export default function BookingsPage() {
                       </div>
                     </div>
 
-                    {/* Flight Info */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 pb-6 border-b">
-                      {/* From */}
-                      <div className="flex flex-col">
-                        <p className="text-sm text-gray-600 font-semibold mb-2">
-                          Вылет
-                        </p>
-                        <p className="text-2xl font-bold text-gray-800">
-                          {formatTime(booking.flight.departureTime)}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          {booking.flight.from}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          {booking.flight.fromAirport}
-                        </p>
+                    {!booking.flight ? (
+                      <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded-lg">
+                        Данные рейса недоступны (flight = null). Возможно рейс
+                        был удалён или не populated.
                       </div>
+                    ) : (
+                      <>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 pb-6 border-b">
+                          <div className="flex flex-col">
+                            <p className="text-sm text-gray-600 font-semibold mb-2">
+                              Вылет
+                            </p>
+                            <p className="text-2xl font-bold text-gray-800">
+                              {formatTime(booking.flight.departureTime)}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              {booking.flight.from}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {booking.flight.fromAirport}
+                            </p>
+                          </div>
 
-                      {/* Flight details */}
-                      <div className="flex flex-col justify-center items-center">
-                        <p className="text-sm text-gray-600 font-semibold mb-4">
-                          Рейс
-                        </p>
-                        <p className="text-lg font-bold text-blue-600 mb-2">
-                          {booking.flight.flightNumber}
-                        </p>
-                        <div className="w-full h-px bg-gray-300"></div>
-                        <p className="text-xs text-gray-500 mt-2">
-                          {booking.flight.flightDuration}
-                        </p>
-                      </div>
+                          <div className="flex flex-col justify-center items-center">
+                            <p className="text-sm text-gray-600 font-semibold mb-4">
+                              Рейс
+                            </p>
+                            <p className="text-lg font-bold text-blue-600 mb-2">
+                              {booking.flight.flightNumber}
+                            </p>
+                            <div className="w-full h-px bg-gray-300"></div>
+                            <p className="text-xs text-gray-500 mt-2">
+                              {booking.flight.flightDuration}
+                            </p>
+                          </div>
 
-                      {/* To */}
-                      <div className="flex flex-col text-right">
-                        <p className="text-sm text-gray-600 font-semibold mb-2">
-                          Прибытие
-                        </p>
-                        <p className="text-2xl font-bold text-gray-800">
-                          {formatTime(booking.flight.arrivalTime)}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          {booking.flight.to}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          {booking.flight.toAirport}
-                        </p>
-                      </div>
-                    </div>
+                          <div className="flex flex-col text-right">
+                            <p className="text-sm text-gray-600 font-semibold mb-2">
+                              Прибытие
+                            </p>
+                            <p className="text-2xl font-bold text-gray-800">
+                              {formatTime(booking.flight.arrivalTime)}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              {booking.flight.to}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {booking.flight.toAirport}
+                            </p>
+                          </div>
+                        </div>
+                      </>
+                    )}
 
                     {/* Passengers and Price */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">

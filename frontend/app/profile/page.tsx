@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { userApi } from "@/shared/api/user.api";
 import { authApi } from "@/shared/api/auth.api";
+import { useAuthStore } from "@/shared/store/auth.store";
+
 import { User, UpdateUserRequest } from "@/shared/types/user.types";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -13,6 +15,8 @@ export default function ProfilePage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const router = useRouter();
+
+  const logoutStore = useAuthStore((s) => s.logout);
 
   const [formData, setFormData] = useState<UpdateUserRequest>({
     firstName: "",
@@ -68,11 +72,13 @@ export default function ProfilePage() {
   };
 
   const handleLogout = async () => {
+    setError("");
     try {
-      await authApi.logout();
-      router.push("/auth");
-    } catch (err) {
-      setError("Ошибка выхода");
+      await authApi.logout(); 
+    } catch (e) {
+    } finally {
+      logoutStore(); 
+      router.replace("/"); 
     }
   };
 
@@ -132,7 +138,7 @@ export default function ProfilePage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="bg-[rgb(244,245,247)] rounded-lg p-4">
                     <label className="text-[rgb(80,98,112)] text-sm font-semibold">
-                      Имя
+                      First Name
                     </label>
                     <p className="text-[rgb(28,43,79)] text-lg mt-1 font-semibold">
                       {user.firstName}
@@ -141,7 +147,7 @@ export default function ProfilePage() {
 
                   <div className="bg-[rgb(244,245,247)] rounded-lg p-4">
                     <label className="text-[rgb(80,98,112)] text-sm font-semibold">
-                      Фамилия
+                      Last Name
                     </label>
                     <p className="text-[rgb(28,43,79)] text-lg mt-1 font-semibold">
                       {user.lastName}
@@ -150,7 +156,7 @@ export default function ProfilePage() {
 
                   <div className="bg-[rgb(244,245,247)] rounded-lg p-4">
                     <label className="text-[rgb(80,98,112)] text-sm font-semibold">
-                      Имя пользователя
+                      Username
                     </label>
                     <p className="text-[rgb(28,43,79)] text-lg mt-1 font-semibold">
                       {user.username}
@@ -168,7 +174,7 @@ export default function ProfilePage() {
 
                   <div className="bg-[rgb(244,245,247)] rounded-lg p-4">
                     <label className="text-[rgb(80,98,112)] text-sm font-semibold">
-                      Номер телефона
+                      Phone Number
                     </label>
                     <p className="text-[rgb(28,43,79)] text-lg mt-1 font-semibold">
                       {user.phoneNumber}
@@ -177,7 +183,7 @@ export default function ProfilePage() {
 
                   <div className="bg-[rgb(244,245,247)] rounded-lg p-4">
                     <label className="text-[rgb(80,98,112)] text-sm font-semibold">
-                      Роль
+                      Role
                     </label>
                     <p className="text-lg mt-1">
                       <span
