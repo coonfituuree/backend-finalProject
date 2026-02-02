@@ -71,23 +71,23 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2 text-center">
+    <div className="min-h-screen bg-[rgb(244,245,247)] flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl border border-gray-200 p-8 w-full max-w-md shadow-sm">
+        <h1 className="text-3xl font-bold text-[rgb(28,43,79)] mb-2 text-center">
           {isLogin ? "Вход" : "Регистрация"}
         </h1>
-        <p className="text-gray-600 text-center mb-6">
+        <p className="text-[rgb(80,98,112)] text-center mb-6 font-medium">
           {isLogin ? "Добро пожаловать обратно" : "Создайте новый аккаунт"}
         </p>
 
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4 text-sm font-medium">
             {error}
           </div>
         )}
 
         {success && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+          <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-4 text-sm font-medium">
             {success}
           </div>
         )}
@@ -95,7 +95,7 @@ const Auth = () => {
         {isLogin ? (
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-gray-700 font-medium mb-2">
+              <label className="block text-[rgb(28,43,79)] font-semibold mb-2 text-sm">
                 Email
               </label>
               <input
@@ -104,13 +104,13 @@ const Auth = () => {
                 value={loginForm.email}
                 onChange={handleLoginChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-[rgb(164,134,86)] focus:ring-1 focus:ring-[rgb(164,134,86)] transition"
                 placeholder="your@email.com"
               />
             </div>
 
             <div>
-              <label className="block text-gray-700 font-medium mb-2">
+              <label className="block text-[rgb(28,43,79)] font-semibold mb-2 text-sm">
                 Пароль
               </label>
               <input
@@ -119,7 +119,7 @@ const Auth = () => {
                 value={loginForm.password}
                 onChange={handleLoginChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-[rgb(164,134,86)] focus:ring-1 focus:ring-[rgb(164,134,86)] transition"
                 placeholder="••••••••"
               />
             </div>
@@ -127,7 +127,7 @@ const Auth = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white font-bold py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50">
+              className="w-full bg-[linear-gradient(116.49deg,_rgb(28,43,79)_0%,_rgb(80,98,112)_100%)] text-white font-bold py-3 rounded-lg hover:opacity-90 transition disabled:opacity-50">
               {loading ? "Вход..." : "Войти"}
             </button>
           </form>
@@ -135,7 +135,7 @@ const Auth = () => {
           <form onSubmit={handleRegister} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-gray-700 font-medium mb-2">
+                <label className="block text-[rgb(28,43,79)] font-semibold mb-2 text-sm">
                   Имя
                 </label>
                 <input
@@ -144,12 +144,12 @@ const Auth = () => {
                   value={registerForm.firstName}
                   onChange={handleRegisterChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-[rgb(164,134,86)] focus:ring-1 focus:ring-[rgb(164,134,86)] transition"
                   placeholder="Иван"
                 />
               </div>
               <div>
-                <label className="block text-gray-700 font-medium mb-2">
+                <label className="block text-[rgb(28,43,79)] font-semibold mb-2 text-sm">
                   Фамилия
                 </label>
                 <input
@@ -158,14 +158,14 @@ const Auth = () => {
                   value={registerForm.lastName}
                   onChange={handleRegisterChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-[rgb(164,134,86)] focus:ring-1 focus:ring-[rgb(164,134,86)] transition"
                   placeholder="Иванов"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-gray-700 font-medium mb-2">
+              <label className="block text-[rgb(28,43,79)] font-semibold mb-2 text-sm">
                 Имя пользователя
               </label>
               <input
@@ -174,13 +174,13 @@ const Auth = () => {
                 value={registerForm.username}
                 onChange={handleRegisterChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-[rgb(164,134,86)] focus:ring-1 focus:ring-[rgb(164,134,86)] transition"
                 placeholder="ivanov_ivan"
               />
             </div>
 
             <div>
-              <label className="block text-gray-700 font-medium mb-2">
+              <label className="block text-[rgb(28,43,79)] font-semibold mb-2 text-sm">
                 Email
               </label>
               <input
@@ -189,13 +189,13 @@ const Auth = () => {
                 value={registerForm.email}
                 onChange={handleRegisterChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-[rgb(164,134,86)] focus:ring-1 focus:ring-[rgb(164,134,86)] transition"
                 placeholder="your@email.com"
               />
             </div>
 
             <div>
-              <label className="block text-gray-700 font-medium mb-2">
+              <label className="block text-[rgb(28,43,79)] font-semibold mb-2 text-sm">
                 Номер телефона
               </label>
               <input
@@ -204,13 +204,13 @@ const Auth = () => {
                 value={registerForm.phoneNumber}
                 onChange={handleRegisterChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-[rgb(164,134,86)] focus:ring-1 focus:ring-[rgb(164,134,86)] transition"
                 placeholder="+7 (999) 999-99-99"
               />
             </div>
 
             <div>
-              <label className="block text-gray-700 font-medium mb-2">
+              <label className="block text-[rgb(28,43,79)] font-semibold mb-2 text-sm">
                 Пароль
               </label>
               <input
@@ -219,7 +219,7 @@ const Auth = () => {
                 value={registerForm.password}
                 onChange={handleRegisterChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-[rgb(164,134,86)] focus:ring-1 focus:ring-[rgb(164,134,86)] transition"
                 placeholder="••••••••"
               />
             </div>
@@ -227,18 +227,18 @@ const Auth = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white font-bold py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50">
+              className="w-full bg-[linear-gradient(116.49deg,_rgb(28,43,79)_0%,_rgb(80,98,112)_100%)] text-white font-bold py-3 rounded-lg hover:opacity-90 transition disabled:opacity-50">
               {loading ? "Регистрация..." : "Зарегистрироваться"}
             </button>
           </form>
         )}
 
         <div className="mt-6 text-center">
-          <p className="text-gray-600">
+          <p className="text-[rgb(80,98,112)] font-medium">
             {isLogin ? "Нет аккаунта?" : "Уже есть аккаунт?"}{" "}
             <button
               onClick={() => setIsLogin(!isLogin)}
-              className="text-blue-600 font-bold hover:underline">
+              className="text-[rgb(164,134,86)] font-bold hover:underline">
               {isLogin ? "Регистрация" : "Вход"}
             </button>
           </p>

@@ -146,7 +146,7 @@ function Footer() {
 
           <div className="flex justify-between items-center max-md:flex-col-reverse">
             <div className="flex flex-col gap-4 text-xs font-medium text-white max-md:items-center">
-              <div>© 2026 АО «Эйр Астана». Все права защищены.</div>
+              <div>© 2026 АО «Vizier Airways». Все права защищены.</div>
 
               <div className="flex flex-col gap-6 text-[#D0D5DD] max-md:flex-col max-md:items-center max-md:justify-center">
                 <div className="flex gap-4">
@@ -163,7 +163,7 @@ function Footer() {
 
             <div className="flex gap-6 max-md:flex-col max-md:items-center max-md:gap-4">
               <div className="text-white text-sm w-42.5 max-md:w-full font-bold">
-                Скачать мобильное приложение Air Astana
+                Скачать мобильное приложение Vizier Airways
               </div>
 
               <div className="flex gap-2">

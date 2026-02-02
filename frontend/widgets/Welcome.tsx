@@ -53,7 +53,6 @@ const destinations: Destination[] = [
 export default function Welcome() {
   return (
     <div className="w-full">
-      {/* TOP promo cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {promoTop.map((p) => (
           <PromoCard
@@ -65,7 +64,6 @@ export default function Welcome() {
         ))}
       </div>
 
-      {/* Destinations section */}
       <div className="mt-12 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
         <div className="flex flex-col justify-center">
           <h2 className="text-3xl font-semibold text-[rgb(28,43,79)] leading-tight">
@@ -85,8 +83,6 @@ export default function Welcome() {
           ))}
         </div>
       </div>
-
-      {/* Bottom big cards */}
       <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-8">
         <NewsletterCard />
         <AppCard />
@@ -165,18 +161,11 @@ function NewsletterCard() {
         и узнавайте первыми о новых маршрутах и специальных предложениях.
       </p>
 
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <input
-          className="rounded-2xl bg-white/15 placeholder-white/60 outline-none px-4 py-3"
+          className="w-full rounded-2xl mt-5 bg-white/15 placeholder-white/60 outline-none px-4 py-3"
           placeholder="Email"
         />
-        <select className="rounded-2xl bg-white/15 outline-none px-4 py-3">
-          <option className="text-black">Город</option>
-          <option className="text-black">Almaty</option>
-          <option className="text-black">Astana</option>
-          <option className="text-black">Shymkent</option>
-        </select>
-      </div>
+        
 
       <p className="mt-5 text-xs text-white/70 max-w-lg">
         Нажимая на кнопку «Подписаться», вы соглашаетесь на обработку ваших
@@ -205,10 +194,9 @@ function AppCard() {
         Бронируйте билеты быстро и легко с приложением Vizier Airways
       </p>
 
-      <div className="mt-6 flex items-end gap-6">
+      <div className="mt-6 flex items-center gap-6">
         <div className="bg-white rounded-2xl p-3">
-          {/* QR placeholder */}
-          <div className="w-[90px] h-[90px] bg-black/10 rounded-xl" />
+          <Image src="/welcome/qr.png" alt="qr" width={100} height={100} className="w-[90px] h-[90px] bg-black/10 rounded-xl" />
         </div>
 
         <p className="text-sm text-white/90 max-w-[220px]">
@@ -216,16 +204,7 @@ function AppCard() {
         </p>
       </div>
 
-      {/* phone image */}
-      <div className="hidden md:block absolute right-6 bottom-0 w-[260px] h-[320px]">
-        <Image
-          src="/welcome/app-phone.png"
-          alt=""
-          fill
-          className="object-contain"
-          sizes="260px"
-        />
-      </div>
+      
     </div>
   );
 }

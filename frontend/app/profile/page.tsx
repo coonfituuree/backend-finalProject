@@ -50,8 +50,6 @@ export default function ProfilePage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  
-
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -80,20 +78,22 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen bg-[rgb(244,245,247)] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[rgb(28,43,79)]"></div>
       </div>
     );
   }
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-xl p-8 text-center">
-          <p className="text-red-600 mb-4">Пожалуйста, авторизуйтесь</p>
+      <div className="min-h-screen bg-[rgb(244,245,247)] flex items-center justify-center">
+        <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center shadow-sm">
+          <p className="text-red-700 mb-4 font-semibold">
+            Пожалуйста, авторизуйтесь
+          </p>
           <Link
             href="/auth"
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+            className="inline-block bg-[linear-gradient(116.49deg,_rgb(28,43,79)_0%,_rgb(80,98,112)_100%)] text-white px-6 py-3 rounded-lg hover:opacity-90 font-bold transition">
             Войти
           </Link>
         </div>
@@ -102,25 +102,27 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
+    <div className="min-h-screen bg-[rgb(244,245,247)] py-12 px-4">
       <div className="max-w-2xl mx-auto">
-        <div className="bg-white rounded-lg shadow-xl overflow-hidden">
+        <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-8 text-white">
+          <div className="bg-[linear-gradient(116.49deg,_rgb(28,43,79)_0%,_rgb(80,98,112)_100%)] p-8 text-white">
             <h1 className="text-3xl font-bold mb-2">Мой профиль</h1>
-            <p className="text-blue-100">Управление личной информацией</p>
+            <p className="text-white/80 font-medium">
+              Управление личной информацией
+            </p>
           </div>
 
           {/* Content */}
           <div className="p-8">
             {error && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm font-medium">
                 {error}
               </div>
             )}
 
             {success && (
-              <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6 text-sm font-medium">
                 {success}
               </div>
             )}
@@ -128,59 +130,61 @@ export default function ProfilePage() {
             {!editing ? (
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="text-gray-600 text-sm font-semibold">
+                  <div className="bg-[rgb(244,245,247)] rounded-lg p-4">
+                    <label className="text-[rgb(80,98,112)] text-sm font-semibold">
                       Имя
                     </label>
-                    <p className="text-gray-800 text-lg mt-1">
+                    <p className="text-[rgb(28,43,79)] text-lg mt-1 font-semibold">
                       {user.firstName}
                     </p>
                   </div>
 
-                  <div>
-                    <label className="text-gray-600 text-sm font-semibold">
+                  <div className="bg-[rgb(244,245,247)] rounded-lg p-4">
+                    <label className="text-[rgb(80,98,112)] text-sm font-semibold">
                       Фамилия
                     </label>
-                    <p className="text-gray-800 text-lg mt-1">
+                    <p className="text-[rgb(28,43,79)] text-lg mt-1 font-semibold">
                       {user.lastName}
                     </p>
                   </div>
 
-                  <div>
-                    <label className="text-gray-600 text-sm font-semibold">
+                  <div className="bg-[rgb(244,245,247)] rounded-lg p-4">
+                    <label className="text-[rgb(80,98,112)] text-sm font-semibold">
                       Имя пользователя
                     </label>
-                    <p className="text-gray-800 text-lg mt-1">
+                    <p className="text-[rgb(28,43,79)] text-lg mt-1 font-semibold">
                       {user.username}
                     </p>
                   </div>
 
-                  <div>
-                    <label className="text-gray-600 text-sm font-semibold">
+                  <div className="bg-[rgb(244,245,247)] rounded-lg p-4">
+                    <label className="text-[rgb(80,98,112)] text-sm font-semibold">
                       Email
                     </label>
-                    <p className="text-gray-800 text-lg mt-1">{user.email}</p>
+                    <p className="text-[rgb(28,43,79)] text-lg mt-1 font-semibold">
+                      {user.email}
+                    </p>
                   </div>
 
-                  <div>
-                    <label className="text-gray-600 text-sm font-semibold">
+                  <div className="bg-[rgb(244,245,247)] rounded-lg p-4">
+                    <label className="text-[rgb(80,98,112)] text-sm font-semibold">
                       Номер телефона
                     </label>
-                    <p className="text-gray-800 text-lg mt-1">
+                    <p className="text-[rgb(28,43,79)] text-lg mt-1 font-semibold">
                       {user.phoneNumber}
                     </p>
                   </div>
 
-                  <div>
-                    <label className="text-gray-600 text-sm font-semibold">
+                  <div className="bg-[rgb(244,245,247)] rounded-lg p-4">
+                    <label className="text-[rgb(80,98,112)] text-sm font-semibold">
                       Роль
                     </label>
-                    <p className="text-gray-800 text-lg mt-1">
+                    <p className="text-lg mt-1">
                       <span
-                        className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                        className={`inline-block px-3 py-1 rounded-lg text-sm font-semibold ${
                           user.role === "admin"
-                            ? "bg-purple-100 text-purple-800"
-                            : "bg-blue-100 text-blue-800"
+                            ? "bg-[rgb(164,134,86)] text-white"
+                            : "bg-[rgb(28,43,79)] text-white"
                         }`}>
                         {user.role === "admin"
                           ? "Администратор"
@@ -189,16 +193,16 @@ export default function ProfilePage() {
                     </p>
                   </div>
 
-                  <div>
-                    <label className="text-gray-600 text-sm font-semibold">
+                  <div className="bg-[rgb(244,245,247)] rounded-lg p-4">
+                    <label className="text-[rgb(80,98,112)] text-sm font-semibold">
                       Статус верификации
                     </label>
-                    <p className="text-gray-800 text-lg mt-1">
+                    <p className="text-lg mt-1">
                       <span
-                        className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                        className={`inline-block px-3 py-1 rounded-lg text-sm font-semibold ${
                           user.isAccountVerified
-                            ? "bg-green-100 text-green-800"
-                            : "bg-yellow-100 text-yellow-800"
+                            ? "bg-green-500 text-white"
+                            : "bg-yellow-500 text-white"
                         }`}>
                         {user.isAccountVerified
                           ? "Подтверждено"
@@ -207,11 +211,11 @@ export default function ProfilePage() {
                     </p>
                   </div>
 
-                  <div>
-                    <label className="text-gray-600 text-sm font-semibold">
+                  <div className="bg-[rgb(244,245,247)] rounded-lg p-4">
+                    <label className="text-[rgb(80,98,112)] text-sm font-semibold">
                       Дата создания
                     </label>
-                    <p className="text-gray-800 text-lg mt-1">
+                    <p className="text-[rgb(28,43,79)] text-lg mt-1 font-semibold">
                       {new Date(user.createdAt).toLocaleDateString("ru-RU")}
                     </p>
                   </div>
@@ -220,19 +224,21 @@ export default function ProfilePage() {
                 <div className="pt-6 border-t flex gap-4">
                   <button
                     onClick={() => setEditing(true)}
-                    className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition">
+                    className="flex-1 bg-[rgb(164,134,86)] text-white px-6 py-3 rounded-lg font-bold hover:opacity-90 transition">
                     Редактировать профиль
                   </button>
 
                   {user.role === "admin" && (
-                    <button className="flex-1 bg-purple-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-purple-700 transition" onClick={() => window.location.href = '/admin'}>
+                    <button
+                      className="flex-1 bg-[linear-gradient(116.49deg,_rgb(28,43,79)_0%,_rgb(80,98,112)_100%)] text-white px-6 py-3 rounded-lg font-bold hover:opacity-90 transition"
+                      onClick={() => (window.location.href = "/admin")}>
                       Админ-панель
                     </button>
                   )}
 
                   <button
                     onClick={handleLogout}
-                    className="flex-1 bg-red-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-red-700 transition">
+                    className="flex-1 bg-[rgb(244,245,247)] border border-gray-200 text-[rgb(28,43,79)] px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition">
                     Выход
                   </button>
                 </div>
@@ -241,7 +247,7 @@ export default function ProfilePage() {
               /* Edit Form */
               <form onSubmit={handleUpdateProfile} className="space-y-6">
                 <div>
-                  <label className="block text-gray-700 font-medium mb-2">
+                  <label className="block text-[rgb(28,43,79)] font-semibold mb-2 text-sm">
                     Имя
                   </label>
                   <input
@@ -249,12 +255,12 @@ export default function ProfilePage() {
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-[rgb(164,134,86)] focus:ring-1 focus:ring-[rgb(164,134,86)] transition"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 font-medium mb-2">
+                  <label className="block text-[rgb(28,43,79)] font-semibold mb-2 text-sm">
                     Фамилия
                   </label>
                   <input
@@ -262,12 +268,12 @@ export default function ProfilePage() {
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-[rgb(164,134,86)] focus:ring-1 focus:ring-[rgb(164,134,86)] transition"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 font-medium mb-2">
+                  <label className="block text-[rgb(28,43,79)] font-semibold mb-2 text-sm">
                     Номер телефона
                   </label>
                   <input
@@ -275,20 +281,20 @@ export default function ProfilePage() {
                     name="phoneNumber"
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-[rgb(164,134,86)] focus:ring-1 focus:ring-[rgb(164,134,86)] transition"
                   />
                 </div>
 
                 <div className="flex gap-4 pt-4">
                   <button
                     type="submit"
-                    className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition">
+                    className="flex-1 bg-[rgb(164,134,86)] text-white px-6 py-3 rounded-lg font-bold hover:opacity-90 transition">
                     Сохранить изменения
                   </button>
                   <button
                     type="button"
                     onClick={() => setEditing(false)}
-                    className="flex-1 bg-gray-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-gray-700 transition">
+                    className="flex-1 bg-[rgb(244,245,247)] border border-gray-200 text-[rgb(28,43,79)] px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition">
                     Отмена
                   </button>
                 </div>
