@@ -17,7 +17,7 @@ export function ResultsToolbar({ sort, onSortChange, onOpenFilters }: Props) {
         <select
           value={sort}
           onChange={(e) => onSortChange(e.target.value as any)}
-          className="text-sm font-semibold text-[rgb(164,134,86)] outline-none"
+          className="text-sm font-semibold text-[rgb(164,134,86)] outline-none cursor-pointer"
         >
           <option value="recommended">РЕКОМЕНДОВАННЫЙ</option>
           <option value="cheap">САМЫЙ ДЕШЕВЫЙ</option>

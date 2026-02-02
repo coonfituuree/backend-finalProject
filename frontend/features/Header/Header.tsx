@@ -49,7 +49,7 @@ function Header() {
             ) : (
               <Link
                 href={"/auth"}
-                className="px-6 py-2 bg-[#242424] cursor-pointer rounded-2xl hover:bg-[#242424e9]">
+                className="px-6 py-2 bg-primary cursor-pointer rounded-2xl hover:bg-[#242424]">
                 Вход
               </Link>
             )}

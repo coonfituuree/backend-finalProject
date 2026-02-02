@@ -6,13 +6,12 @@ import Container from "@/shared/ui/Container";
 import { Search } from "lucide-react";
 
 type SearchOptions = {
-  departureDate?: string; // yyyy-mm-dd
-  returnDate?: string; // yyyy-mm-dd
+  departureDate?: string; 
+  returnDate?: string; 
   passengers?: number;
   travelClass?: "economy" | "business";
 };
 
-// Совместимость: можно передать старую функцию (from,to) или новую (from,to,options)
 interface SearchSectionProps {
   onSearch?:
     | ((from: string, to: string) => void)
@@ -50,7 +49,6 @@ function SearchSection({ onSearch }: SearchSectionProps) {
       travelClass,
     };
 
-    // вызов с options, но если родитель принимает только (from,to) — тоже ок
     (onSearch as any)(from, to, options);
   };
 
@@ -137,7 +135,7 @@ function SearchSection({ onSearch }: SearchSectionProps) {
                       onClick={() => setTravelClass("economy")}
                       className={`px-3 py-2 rounded-xl text-sm transition ${
                         travelClass === "economy"
-                          ? "bg-[#242424] text-white"
+                          ? "bg-primary text-white"
                           : "bg-gray-100 text-gray-700"
                       }`}>
                       Economy
@@ -148,7 +146,7 @@ function SearchSection({ onSearch }: SearchSectionProps) {
                       onClick={() => setTravelClass("business")}
                       className={`px-3 py-2 rounded-xl text-sm transition ${
                         travelClass === "business"
-                          ? "bg-[#242424] text-white"
+                          ? "bg-primary text-white"
                           : "bg-gray-100 text-gray-700"
                       }`}>
                       Business
@@ -160,7 +158,7 @@ function SearchSection({ onSearch }: SearchSectionProps) {
 
             <button
               onClick={handleSearch}
-              className="w-20 bg-[#242424] rounded-2xl flex items-center justify-center transition-all duration-300 cursor-pointer hover:opacity-80">
+              className="w-20 bg-primary rounded-2xl flex items-center justify-center transition-all duration-300 cursor-pointer hover:opacity-80">
               <Search color="white" />
             </button>
           </div>

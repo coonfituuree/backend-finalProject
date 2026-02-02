@@ -3,9 +3,9 @@
 import { useMemo, useState } from "react";
 
 type DayPrice = {
-  date: string;        // "2026-02-25"
-  label: string;       // "25 фев., ср"
-  fromPrice: number;   // 80119
+  date: string;        
+  label: string;       
+  fromPrice: number;   
   isLowest?: boolean;
 };
 
@@ -13,7 +13,7 @@ type Props = {
   items: DayPrice[];
   selectedDate?: string;
   onSelect: (date: string) => void;
-  currency?: string; // "KZT"
+  currency?: string;
 };
 
 export function DatePriceStrip({
@@ -35,7 +35,6 @@ export function DatePriceStrip({
   return (
     <div className="mt-8">
       <div className="flex items-center gap-3">
-        {/* left arrow */}
         <button
           type="button"
           disabled={!canLeft}
@@ -48,7 +47,6 @@ export function DatePriceStrip({
           <span className="text-2xl leading-none">‹</span>
         </button>
 
-        {/* cards */}
         <div className="flex-1 grid grid-cols-5 gap-3">
           {slice.map((d) => {
             const active = d.date === selectedDate;
@@ -58,7 +56,7 @@ export function DatePriceStrip({
                 type="button"
                 onClick={() => onSelect(d.date)}
                 className={`
-                  relative bg-white rounded-xl border px-3 py-3 text-left transition
+                  relative bg-white rounded-xl cursor-pointer border px-3 py-3 text-left transition
                   ${active ? "border-[rgb(164,134,86)] shadow-sm" : "border-gray-200 hover:border-[rgb(164,134,86)]"}
                 `}
               >
@@ -77,7 +75,6 @@ export function DatePriceStrip({
           })}
         </div>
 
-        {/* right arrow */}
         <button
           type="button"
           disabled={!canRight}

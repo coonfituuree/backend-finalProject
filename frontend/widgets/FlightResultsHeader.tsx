@@ -30,7 +30,7 @@ export function FlightResultsHeader({
         <button
           type="button"
           onClick={() => onTogglePoints(!showPoints)}
-          className={`relative w-12 h-7 rounded-full transition ${
+          className={`relative w-12 h-7 rounded-full transition cursor-pointer ${
             showPoints ? "bg-[rgb(164,134,86)]" : "bg-gray-300"
           }`}
           aria-pressed={showPoints}

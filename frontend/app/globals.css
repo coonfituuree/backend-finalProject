@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+@theme inline {
+  --color-primary: #1c2b4f;
+  --color-secondary: #d0d5dd;
+}
+
 body {
   font-family: var(--font-montserrat);
 }

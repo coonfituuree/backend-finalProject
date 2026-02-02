@@ -119,7 +119,6 @@ export function FlightResults({ flights, initialDate }: Props) {
 }
 
 function extractDate(value?: string) {
-  // если вдруг прилетает "2026-02-01 06:40"
   if (!value) return "";
   const s = String(value);
   const m = s.match(/^(\d{4}-\d{2}-\d{2})/);
@@ -139,7 +138,6 @@ function formatRuDateLabel(yyyy_mm_dd: string) {
 }
 
 function minutes(text?: string) {
-  // "1ч 40м"
   const s = String(text ?? "");
   const h = Number(s.match(/(\d+)\s*ч/)?.[1] ?? 0);
   const m = Number(s.match(/(\d+)\s*м/)?.[1] ?? 0);

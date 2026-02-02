@@ -127,7 +127,6 @@ export default function ProfilePage() {
 
             {!editing ? (
               <div className="space-y-6">
-                {/* User Info Display */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="text-gray-600 text-sm font-semibold">
@@ -218,7 +217,6 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                {/* Buttons */}
                 <div className="pt-6 border-t flex gap-4">
                   <button
                     onClick={() => setEditing(true)}
