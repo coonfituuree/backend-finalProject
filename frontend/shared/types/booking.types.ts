@@ -6,15 +6,14 @@ export interface Passenger {
   gender: "male" | "female";
 }
 
-export interface CreateBookingRequest {
-  flightId: string;
-  cabinClass: "economy" | "business";
-  passengers: Passenger[];
+export interface BookingUser {
+  _id: string;
+  username: string;
 }
 
 export interface Booking {
   _id: string;
-  user: string;
+  user: BookingUser | null; // ✅ было string
   flight: Flight | null;
   passengers: Passenger[];
   cabinClass: "economy" | "business";
@@ -24,8 +23,8 @@ export interface Booking {
   payment?: string;
   pnr: string;
   email: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string; // лучше string, потому что из API приходит строка
+  updatedAt: string; // лучше string
 }
 
 export interface BookingResponse {

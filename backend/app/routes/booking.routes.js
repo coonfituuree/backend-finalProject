@@ -11,4 +11,5 @@ bookingRouter.get("/me", authMiddleware, myBookings);
 bookingRouter.get("/:id", authMiddleware, getBookingById);
 bookingRouter.patch("/:id/cancel", authMiddleware, cancelBooking);
 
+
 export default bookingRouter;

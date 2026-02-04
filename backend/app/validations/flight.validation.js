@@ -7,6 +7,10 @@ export const flightSchema = Joi.object({
   to: Joi.string().trim().min(2).max(50).required(),
   toAirport: Joi.string().trim().min(2).max(100).required(),
 
+  fromAirportAbbreviation: Joi.string().length(3).uppercase().required(),
+  toAirportAbbreviation: Joi.string().length(3).uppercase().required(),
+
+
   operatedBy: Joi.string().trim().min(2).max(100).required(),
   flightNumber: Joi.string().trim().min(2).max(20).required(),
 
@@ -14,6 +18,9 @@ export const flightSchema = Joi.object({
 
   departureTime: Joi.string().required(),
   arrivalTime: Joi.string().required(),
+
+  departureDate: Joi.string().trim().min(10).max(10).required(),
+  arrivalDate: Joi.string().trim().min(10).max(10).required(),
 
   flightDuration: Joi.string().required(),
 

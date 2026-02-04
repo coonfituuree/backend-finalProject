@@ -39,13 +39,17 @@ export const postFlight = async (req, res) => {
     const flight = await flightsModel.create({
       from: req.body.from,
       fromAirport: req.body.fromAirport,
-      to: req.body.to,
+      fromAirportAbbreviation: req.body.fromAirportAbbreviation,
+      to: req.body.to,  
       toAirport: req.body.toAirport,
+      toAirportAbbreviation: req.body.fromAirportAbbreviation,
       operatedBy: req.body.operatedBy,
       flightNumber: req.body.flightNumber,
       airplaneType: req.body.airplaneType,
       departureTime: req.body.departureTime,
+      departureDate: req.body.departureDate,
       arrivalTime: req.body.arrivalTime,
+      arrivalDate: req.body.arrivalDate,
       flightDuration: req.body.flightDuration,
       numberOfTransfers: req.body.numberOfTransfers,
       economyPrice: req.body.economyPrice,
@@ -112,5 +116,23 @@ export const postFlightsBulk = async (req, res) => {
       success: false,
       message: err.message,
     });
+  }
+};
+
+
+export const getAllFlights = async (req, res) => {
+  try {
+    const flights = await flightsModel.find();
+    if (flights.length === 0) {
+      return res.status(404).json({ success: false, message: "No flights found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: flights,
+      count: flights.length,
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
   }
 };

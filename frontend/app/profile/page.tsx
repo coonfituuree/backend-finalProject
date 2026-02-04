@@ -201,7 +201,7 @@ export default function ProfilePage() {
 
                   <div className="bg-[rgb(244,245,247)] rounded-lg p-4">
                     <label className="text-[rgb(80,98,112)] text-sm font-semibold">
-                      Статус верификации
+                      Verification Status
                     </label>
                     <p className="text-lg mt-1">
                       <span
@@ -219,7 +219,7 @@ export default function ProfilePage() {
 
                   <div className="bg-[rgb(244,245,247)] rounded-lg p-4">
                     <label className="text-[rgb(80,98,112)] text-sm font-semibold">
-                      Дата создания
+                      CreatedAt
                     </label>
                     <p className="text-[rgb(28,43,79)] text-lg mt-1 font-semibold">
                       {new Date(user.createdAt).toLocaleDateString("ru-RU")}

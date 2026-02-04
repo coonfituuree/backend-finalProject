@@ -48,14 +48,13 @@ const Auth = () => {
     setSuccess("");
 
     try {
-      const result = await authApi.login(loginForm); // result: AuthResponse
+      const result = await authApi.login(loginForm);
 
       if (!result.success) {
-        throw new Error(result.message || "Login failed");
+        return setError("Ошибка входа");
       }
 
-      // ✅ подтягиваем реального пользователя
-      const me = await userApi.getCurrentUser(); // ожидаем { user: ... }
+      const me = await userApi.getCurrentUser();
 
       if (!me?.user) {
         throw new Error("Cannot load current user");

@@ -1,23 +1,26 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { cn } from "../libs/utils";
 import { MinusIcon } from "@/shared/ui/icons/MinusIcon";
 import { ArrowRightIcon } from "@/shared/ui/icons/ArrowRightIcon";
 import { TimeBlock } from "@/shared/ui/blocks/TimeBlock";
 import { DetailsButton } from "@/shared/ui/DetailsButton";
-import Economy from "./blocks/Economy";
-import Business from "./blocks/Business";
 import { Flight } from "@/shared/types/flight.types";
+import { Business } from "./blocks/Business";
+import { Economy } from "./blocks/Economy";
 
 interface TicketProps {
   flight: Flight;
   className?: string;
 }
 
-function Ticket({ flight, className }: TicketProps) {
+export default function Ticket({ flight, className }: TicketProps) {
+  const router = useRouter();
+
   const formatPrice = (value: unknown) => {
     const n = typeof value === "number" ? value : Number(value);
-    if (!Number.isFinite(n)) return 0; 
+    if (!Number.isFinite(n)) return 0;
     return n;
   };
 
@@ -35,8 +38,14 @@ function Ticket({ flight, className }: TicketProps) {
   const fromAirportAbbreviation = String(flight.fromAirportAbbreviation ?? "—");
   const toAirportAbbreviation = String(flight.toAirportAbbreviation ?? "—");
 
-  const economPrice = formatPrice((flight as any).EconomPrice ?? (flight as any).economPrice);
-  const businessPrice = formatPrice((flight as any).businessPrice);
+  const economyPrice = formatPrice(flight.economyPrice);
+  const businessPrice = formatPrice(flight.businessPrice);
+
+  const handleBooking = (cabinClass: "economy" | "business") => {
+    router.push(
+      `/bookings?flightId=${flight._id}&cabinClass=${cabinClass}`
+    );
+  };
 
   return (
     <div className={cn("", className)}>
@@ -45,7 +54,10 @@ function Ticket({ flight, className }: TicketProps) {
           <div className="flex flex-col">
             <div className="flex gap-16">
               <div className="flex gap-14">
-                <TimeBlock time={flight.departureTime} code={fromAirportAbbreviation} />
+                <TimeBlock
+                  time={flight.departureTime}
+                  code={fromAirportAbbreviation}
+                />
 
                 <div className="flex items-center self-start gap-2 whitespace-nowrap">
                   <MinusIcon className="w-6 h-6 fill-[rgb(152,162,179)]" />
@@ -57,7 +69,10 @@ function Ticket({ flight, className }: TicketProps) {
               </div>
 
               <div className="flex w-full items-start justify-between gap-14">
-                <TimeBlock time={flight.arrivalTime} code={toAirportAbbreviation} />
+                <TimeBlock
+                  time={flight.arrivalTime}
+                  code={toAirportAbbreviation}
+                />
                 <DetailsButton flight={flight} />
               </div>
             </div>
@@ -73,12 +88,23 @@ function Ticket({ flight, className }: TicketProps) {
         </div>
 
         <div className="flex">
-          <Economy price={economPrice} />
-          <Business price={businessPrice} />
+          {/* ✅ Кликабельный Economy */}
+          <button
+            onClick={() => handleBooking("economy")}
+            className="transition-transform cursor-pointer"
+          >
+            <Economy price={economyPrice} />
+          </button>
+
+          {/* ✅ Кликабельный Business */}
+          <button
+            onClick={() => handleBooking("business")}
+            className="transition-transform cursor-pointer"
+          >
+            <Business price={businessPrice} />
+          </button>
         </div>
       </div>
     </div>
   );
 }
-
-export default Ticket;

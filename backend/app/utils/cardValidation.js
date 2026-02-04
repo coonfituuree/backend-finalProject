@@ -18,7 +18,7 @@ export const isValidLuhn = (numStr) => {
 
 export const isCardNotExpired = (expMonth, expYear) => {
   const now = new Date();
-  const y = now.getFullYear();
+  const y = now.getFullYear() % 100;
   const m = now.getMonth() + 1;
   if (expYear > y) return true;
   if (expYear === y && expMonth >= m) return true;

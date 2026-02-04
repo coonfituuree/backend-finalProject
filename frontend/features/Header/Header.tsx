@@ -16,12 +16,11 @@ function Header() {
 
   const handleLogout = async () => {
     try {
-      await authApi.logout(); // ✅ сервер удалит cookie
+      await authApi.logout(); 
     } catch (e) {
-      // даже если ошибка — локально всё равно выходим
     } finally {
-      logoutStore(); // ✅ сброс zustand
-      router.replace("/auth"); // лучше replace
+      logoutStore();
+      router.replace("/auth"); 
     }
   };
 
@@ -46,11 +45,7 @@ function Header() {
                   {user.username}
                 </Link>
 
-                <button
-                  onClick={handleLogout}
-                  className="px-6 py-2 bg-red-600 cursor-pointer rounded-2xl hover:bg-red-700">
-                  Выход
-                </button>
+                
               </div>
             ) : (
               <Link

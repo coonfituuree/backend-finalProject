@@ -11,11 +11,11 @@ export interface Flight {
   departureDate: string;
   arrivalDate: string;
   airplaneType: string;
-  departureTime: string;
+  departureTime: string | null;
   arrivalTime: string;
   flightDuration: string;
   numberOfTransfers: string;
-  EconomPrice: number;
+  economyPrice: number;
   businessPrice: number;
   createdAt?: Date;
 }

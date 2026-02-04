@@ -3,8 +3,10 @@ import mongoose from "mongoose";
 const flightSchema = new mongoose.Schema({
   from: { type: String, required: true },
   fromAirport: { type: String, required: true },
+  fromAirportAbbreviation: { type: String, required: true },
   to: { type: String, required: true },
   toAirport: { type: String, required: true },
+  toAirportAbbreviation: { type: String, required: true },
   departureDate: { type: String, required: true },
   arrivalDate: { type: String, required: true },
   operatedBy: { type: String, required: true },
@@ -14,9 +16,9 @@ const flightSchema = new mongoose.Schema({
   arrivalTime: { type: String, required: true },
   flightDuration: { type: String, required: true },
   numberOfTransfers: { type: String, required: true },
-  economyPrice: { type: Number, required: true },
+  economyPrice: { type: Number, required: true }, // ✅ Исправлено
   businessPrice: { type: Number, required: true },
-  createdAt: { type: Date },
+  createdAt: { type: Date, default: Date.now },
 });
 
 const flightsModel =

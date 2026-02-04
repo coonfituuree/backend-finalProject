@@ -1,15 +1,7 @@
-import { ArrowDownIcon } from "../icons/ArrowDownIcon";
-
-interface EconomyProps {
-  price: number | string | null | undefined;
-}
-
-function Economy({ price }: EconomyProps) {
-  const n = typeof price === "number" ? price : Number(price);
-
-  const priceText = Number.isFinite(n) ? n.toLocaleString("ru-RU") : "—";
-  const monthlyText = Number.isFinite(n)
-    ? (n / 6).toLocaleString("ru-RU", { maximumFractionDigits: 0 })
+export function Economy({ price }: { price: number }) {
+  const priceText = Number.isFinite(price) ? price.toLocaleString("ru-RU") : "—";
+  const monthlyText = Number.isFinite(price)
+    ? (price / 6).toLocaleString("ru-RU", { maximumFractionDigits: 0 })
     : "—";
 
   return (
@@ -17,7 +9,12 @@ function Economy({ price }: EconomyProps) {
       <div className="w-full flex flex-col gap-1">
         <div className="flex w-full">
           <div className="text-[rgb(28,43,79)] text-xl font-bold">Economy</div>
-          <ArrowDownIcon />
+          <svg
+            className="w-4 h-4 fill-[rgb(102,112,133)] ml-auto"
+            viewBox="0 0 24 24"
+          >
+            <path d="M4.463 8.476a.75.75 0 0 1 1.061-.013l5.606 5.477a1.236 1.236 0 0 0 1.74 0l.006-.007 5.6-5.47a.75.75 0 0 1 1.048 1.074l-5.597 5.467a2.736 2.736 0 0 1-3.854 0L4.476 9.537a.75.75 0 0 1-.013-1.061z" />
+          </svg>
         </div>
 
         <div className="flex flex-col p-0 gap-2 items-start">
@@ -47,5 +44,3 @@ function Economy({ price }: EconomyProps) {
     </div>
   );
 }
-
-export default Economy;

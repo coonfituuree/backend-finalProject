@@ -2,8 +2,7 @@ import bookingModel from "../models/booking.model.js";
 import flightsModel from "../models/flight.model.js";
 import userModel from "../models/user.model.js";
 
-const generatePNR = () =>
-  Math.random().toString(36).slice(2, 8).toUpperCase(); 
+const generatePNR = () => Math.random().toString(36).slice(2, 8).toUpperCase();
 
 export const createBooking = async (req, res) => {
   const userId = req.user.id;
@@ -12,20 +11,40 @@ export const createBooking = async (req, res) => {
   try {
     const flight = await flightsModel.findById(flightId);
     if (!flight) {
-      return res.status(404).json({ success: false, message: "Flight not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Flight not found" });
     }
 
     const user = await userModel.findById(userId).select("email");
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
     const pricePerPassenger =
-      cabinClass === "business" ? flight.businessPrice : flight.EconomPrice;
+      cabinClass === "business" ? flight.businessPrice : flight.economyPrice;
 
     const totalPrice = pricePerPassenger * passengers.length;
 
-    
+    if (
+      typeof pricePerPassenger !== "number" ||
+      Number.isNaN(pricePerPassenger)
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid price for selected cabinClass",
+      });
+    }
+
+    if (!Array.isArray(passengers) || passengers.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Passengers are required",
+      });
+    }
+
     const pnr = generatePNR();
 
     const booking = await bookingModel.create({
@@ -71,7 +90,9 @@ export const getBookingById = async (req, res) => {
       .populate("payment");
 
     if (!booking) {
-      return res.status(404).json({ success: false, message: "Booking not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Booking not found" });
     }
 
     return res.json({ success: true, booking });
@@ -88,13 +109,16 @@ export const cancelBooking = async (req, res) => {
     });
 
     if (!booking) {
-      return res.status(404).json({ success: false, message: "Booking not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Booking not found" });
     }
 
     if (booking.status === "confirmed") {
-      return res
-        .status(400)
-        .json({ success: false, message: "Confirmed bookings cannot be cancelled here" });
+      return res.status(400).json({
+        success: false,
+        message: "Confirmed bookings cannot be cancelled here",
+      });
     }
 
     booking.status = "cancelled";
@@ -103,5 +127,24 @@ export const cancelBooking = async (req, res) => {
     return res.json({ success: true, message: "Booking cancelled" });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+export const getAllBookings = async (req, res) => {
+  try {
+    const allBookings = await bookingModel
+      .find()
+      .populate("user", "username")
+      .populate("flight", "from to");
+
+    if (allBookings.length === 0) {
+      return res
+        .status(404)
+        .json({ success: true, message: "Bookings aren't available" });
+    }
+
+    res.json({ success: true, message: "All data: ", data: allBookings });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Server Error" });
   }
 };

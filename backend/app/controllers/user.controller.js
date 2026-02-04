@@ -1,4 +1,5 @@
 import userModel from "../models/user.model.js";
+import jwt from "jsonwebtoken";
 
 export const getCurrentUser = async (req, res) => {
   try {
@@ -7,7 +8,7 @@ export const getCurrentUser = async (req, res) => {
     const user = await userModel
       .findById(userId)
       .select(
-        "-password -verifyOtp -resetOtp -verifyOtpExpireAt -resetOtpExpireAt -__v -_id",
+        "-password -verifyOtp -resetOtp -verifyOtpExpireAt -resetOtpExpireAt -__v"
       );
 
     if (!user) {
@@ -23,16 +24,17 @@ export const getCurrentUser = async (req, res) => {
 };
 
 export const updateCurrentUser = async (req, res) => {
-  const currentUser = req.user;
+  const userId = req.user.id;
   const updateData = req.body;
+  
   try {
     const updatedUser = await userModel.findByIdAndUpdate(
-      currentUser._id,
+      userId,
       { $set: updateData },
-      { new: true },
+      { new: true }
     );
 
-    if (result.matchedCount === 0) {
+    if (!updatedUser) {
       return res
         .status(404)
         .json({ success: false, message: "User not found" });
@@ -46,14 +48,12 @@ export const updateCurrentUser = async (req, res) => {
 
 export const Me = (req, res) => {
   try {
-    // cookie name: "token" (поменяй если другое)
     const token = req.cookies?.token;
     if (!token)
       return res.status(401).json({ success: false, message: "Unauthorized" });
 
     const payload = jwt.verify(token, process.env.JWT_SECRET);
 
-    // payload должен содержать user info (id/email/role etc)
     return res.json({
       success: true,
       user: {

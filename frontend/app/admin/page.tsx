@@ -1,10 +1,22 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { adminApi, AdminUser, Flight } from "@/shared/api/admin.api";
+import { adminApi, AdminUser } from "@/shared/api/admin.api";
+import { Booking } from "@/shared/types/booking.types";
 import Link from "next/link";
 
-type TabType = "users" | "flights" | "add-flight";
+type TabType = "users" | "bookings" | "add-flight";
+
+const placeholders: Record<string, string> = {
+  departureTime: "00:00",
+  departureDate: "2026-01-01",
+  arrivalTime: "00:00",
+  arrivalDate: "2026-01-01",
+  fromAirportAbbreviation: "ALA",
+  toAirportAbbreviation: "NQZ",
+  flightNumber: "KC123",
+};
+
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<TabType>("users");
@@ -19,20 +31,49 @@ export default function AdminPage() {
   const [flightForm, setFlightForm] = useState({
     from: "",
     fromAirport: "",
+    fromAirportAbbreviation: "",
     to: "",
     toAirport: "",
+    toAirportAbbreviation: "",
     operatedBy: "",
     flightNumber: "",
     airplaneType: "",
     departureTime: "",
+    departureDate: "",
     arrivalTime: "",
+    arrivalDate: "",
     flightDuration: "",
     numberOfTransfers: "",
-    EconomPrice: "",
+    economyPrice: "",
     businessPrice: "",
   });
 
   const [flightsBulkText, setFlightsBulkText] = useState("");
+
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [bookingsLoading, setBookingsLoading] = useState(false);
+  const [bookingsError, setBookingsError] = useState("");
+
+  const loadBookings = async () => {
+    setBookingsLoading(true);
+    setBookingsError("");
+    try {
+      const res = await adminApi.getAllBookings();
+      if (res.data) {
+        setBookings(res.data);
+      }
+    } catch (err) {
+      setBookingsError(err instanceof Error ? err.message : "Ошибка загрузки");
+    } finally {
+      setBookingsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === "bookings") {
+      loadBookings();
+    }
+  }, [activeTab]);
 
   useEffect(() => {
     if (activeTab === "users") {
@@ -75,7 +116,7 @@ export default function AdminPage() {
     try {
       await adminApi.addFlight({
         ...flightForm,
-        EconomPrice: parseFloat(flightForm.EconomPrice),
+        economyPrice: parseFloat(flightForm.economyPrice),
         businessPrice: parseFloat(flightForm.businessPrice),
       });
 
@@ -83,16 +124,20 @@ export default function AdminPage() {
       setFlightForm({
         from: "",
         fromAirport: "",
+        fromAirportAbbreviation: "",
         to: "",
         toAirport: "",
+        toAirportAbbreviation: "",
         operatedBy: "",
         flightNumber: "",
         airplaneType: "",
         departureTime: "",
+        departureDate: "",
         arrivalTime: "",
+        arrivalDate: "",
         flightDuration: "",
         numberOfTransfers: "",
-        EconomPrice: "",
+        economyPrice: "",
         businessPrice: "",
       });
 
@@ -131,7 +176,6 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-[rgb(244,245,247)] py-12 px-4">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <div className="bg-white rounded-2xl border border-gray-200 p-8 mb-6 shadow-sm">
           <div className="flex justify-between items-center">
             <div>
@@ -175,9 +219,9 @@ export default function AdminPage() {
               👥 Пользователи
             </button>
             <button
-              onClick={() => setActiveTab("flights")}
+              onClick={() => setActiveTab("bookings")}
               className={`flex-1 px-6 py-4 font-bold text-center transition ${
-                activeTab === "flights"
+                activeTab === "bookings"
                   ? "bg-[linear-gradient(116.49deg,_rgb(28,43,79)_0%,_rgb(80,98,112)_100%)] text-white"
                   : "bg-[rgb(244,245,247)] text-[rgb(80,98,112)] hover:bg-gray-200"
               }`}>
@@ -194,9 +238,7 @@ export default function AdminPage() {
             </button>
           </div>
 
-          {/* Content */}
           <div className="p-8">
-            {/* Users Tab */}
             {activeTab === "users" && (
               <div>
                 <h2 className="text-2xl font-bold text-[rgb(28,43,79)] mb-6">
@@ -241,7 +283,9 @@ export default function AdminPage() {
                       </thead>
                       <tbody className="divide-y divide-gray-200">
                         {users.map((user) => (
-                          <tr key={user._id} className="hover:bg-[rgb(244,245,247)]">
+                          <tr
+                            key={user._id}
+                            className="hover:bg-[rgb(244,245,247)]">
                             <td className="px-6 py-4 text-sm text-[rgb(28,43,79)] font-medium">
                               {user.firstName} {user.lastName}
                             </td>
@@ -289,22 +333,126 @@ export default function AdminPage() {
               </div>
             )}
 
-            {/* Flights Tab */}
-            {activeTab === "flights" && (
+            {activeTab === "bookings" && (
               <div>
-                <h2 className="text-2xl font-bold text-[rgb(28,43,79)] mb-6">
-                  Все рейсы в системе
-                </h2>
-                <p className="text-[rgb(80,98,112)] mb-4 font-medium">
-                  Эта функция будет загружать список всех рейсов при добавлении
-                  эндпоинта GET /admin/flights в backend
-                </p>
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                  <p className="text-yellow-800 font-medium">
-                    💡 Подсказка: Для отображения рейсов добавьте GET эндпоинт в
-                    backend routes/admin.routes.js
-                  </p>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-2xl font-bold text-[rgb(28,43,79)]">
+                    Все бронирования
+                  </h2>
+
+                  <button
+                    onClick={loadBookings}
+                    disabled={bookingsLoading}
+                    className="px-4 py-2 rounded-lg bg-[rgb(28,43,79)] text-white font-bold disabled:opacity-50">
+                    {bookingsLoading ? "Загрузка..." : "Обновить"}
+                  </button>
                 </div>
+
+                {bookingsError && (
+                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+                    {bookingsError}
+                  </div>
+                )}
+
+                {bookingsLoading ? (
+                  <div className="py-10 text-center text-[rgb(80,98,112)] font-semibold">
+                    Загружаю бронирования...
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead className="bg-[rgb(244,245,247)]">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-sm font-bold text-[rgb(28,43,79)]">
+                            PNR
+                          </th>
+                          <th className="px-6 py-3 text-left text-sm font-bold text-[rgb(28,43,79)]">
+                            Пользователь
+                          </th>
+                          <th className="px-6 py-3 text-left text-sm font-bold text-[rgb(28,43,79)]">
+                            Рейс
+                          </th>
+                          <th className="px-6 py-3 text-left text-sm font-bold text-[rgb(28,43,79)]">
+                            Класс
+                          </th>
+                          <th className="px-6 py-3 text-left text-sm font-bold text-[rgb(28,43,79)]">
+                            Статус
+                          </th>
+                          <th className="px-6 py-3 text-left text-sm font-bold text-[rgb(28,43,79)]">
+                            Сумма
+                          </th>
+                          <th className="px-6 py-3 text-left text-sm font-bold text-[rgb(28,43,79)]">
+                            Дата
+                          </th>
+                        </tr>
+                      </thead>
+
+                      <tbody className="divide-y divide-gray-200">
+                        {bookings.map((booking) => (
+                          <tr
+                            key={booking._id}
+                            className="hover:bg-[rgb(244,245,247)]">
+                            {/* PNR */}
+                            <td className="px-6 py-4 text-sm font-bold text-[rgb(28,43,79)]">
+                              {booking.pnr}
+                            </td>
+
+                            {/* User */}
+                            <td className="px-6 py-4 text-sm text-[rgb(80,98,112)]">
+                              {booking.user?.username ?? "Пользователь удалён"}
+                            </td>
+
+                            {/* Flight */}
+                            <td className="px-6 py-4 text-sm text-[rgb(80,98,112)]">
+                              {booking.flight
+                                ? `${booking.flight.from} → ${booking.flight.to}`
+                                : "Рейс удалён"}
+                            </td>
+
+                            {/* Cabin class */}
+                            <td className="px-6 py-4 text-sm">
+                              <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-[rgb(244,245,247)] text-[rgb(28,43,79)]">
+                                {booking.cabinClass === "economy"
+                                  ? "Эконом"
+                                  : "Бизнес"}
+                              </span>
+                            </td>
+
+                            {/* Status */}
+                            <td className="px-6 py-4 text-sm">
+                              <span
+                                className={`px-3 py-1 rounded-lg text-xs font-semibold ${
+                                  booking.status === "confirmed"
+                                    ? "bg-green-500 text-white"
+                                    : booking.status === "pending"
+                                      ? "bg-yellow-500 text-white"
+                                      : "bg-red-500 text-white"
+                                }`}>
+                                {booking.status === "confirmed"
+                                  ? "Подтверждено"
+                                  : booking.status === "pending"
+                                    ? "Ожидание"
+                                    : "Отменено"}
+                              </span>
+                            </td>
+
+                            {/* Price */}
+                            <td className="px-6 py-4 text-sm font-semibold text-[rgb(28,43,79)]">
+                              {booking.totalPrice.toLocaleString()} ₸
+                            </td>
+
+                            {/* Date */}
+                            <td className="px-6 py-4 text-sm text-[rgb(80,98,112)]">
+                              {new Date(booking.createdAt).toLocaleDateString(
+                                "ru-RU",
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             )}
 
@@ -327,30 +475,39 @@ export default function AdminPage() {
                         <div key={key}>
                           <label className="block text-[rgb(28,43,79)] font-semibold mb-2 text-sm">
                             {key === "from" && "Откуда"}
-                            {key === "fromAirport" && "Код аэропорта (откуда)"}
+                            {key === "fromAirport" && "Название аэропорта (откуда)"}
+                            {key === "fromAirportAbbreviation" &&
+                              "Код аэропорта (откуда)"}
                             {key === "to" && "Куда"}
-                            {key === "toAirport" && "Код аэропорта (куда)"}
+                            {key === "toAirport" && "Название аэропорта (куда)"}
+                            {key === "toAirportAbbreviation" &&
+                              "Код аэропорта (куда)"}
                             {key === "operatedBy" && "Авиакомпания"}
                             {key === "flightNumber" && "Номер рейса"}
                             {key === "airplaneType" && "Тип самолета"}
                             {key === "departureTime" && "Время вылета"}
+                            {key === "departureDate" && "Дата вылета"}
                             {key === "arrivalTime" && "Время прибытия"}
-                            {key === "flightDuration" && "Продолжительность полета"}
-                            {key === "numberOfTransfers" && "Количество пересадок"}
-                            {key === "EconomPrice" && "Цена Эконом класса (₽)"}
-                            {key === "businessPrice" && "Цена Бизнес класса (₽)"}
+                            {key === "arrivalDate" && "Дата прибытия"}
+                            {key === "flightDuration" &&
+                              "Продолжительность полета"}
+                            {key === "numberOfTransfers" &&
+                              "Количество пересадок"}
+                            {key === "economyPrice" &&
+                              "Цена Эконом класса (KZT)"}
+                            {key === "businessPrice" &&
+                              "Цена Бизнес класса (KZT)"}
                           </label>
                           <input
                             type={
-                              key === "departureTime" || key === "arrivalTime"
-                                ? "datetime-local"
-                                : key === "EconomPrice" || key === "businessPrice"
+                              key === "economyPrice" || key === "businessPrice"
                                 ? "number"
                                 : "text"
                             }
                             name={key}
                             value={value}
                             onChange={handleFlightChange}
+                            placeholder={placeholders[key]}
                             required
                             className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-[rgb(164,134,86)] focus:ring-1 focus:ring-[rgb(164,134,86)] transition"
                           />
@@ -393,7 +550,7 @@ export default function AdminPage() {
     "arrivalTime": "2025-02-15T12:00:00",
     "flightDuration": "2h 0min",
     "numberOfTransfers": "0",
-    "EconomPrice": 4500,
+    "economyPrice": 4500,
     "businessPrice": 9000
   }
 ]`}
@@ -418,7 +575,7 @@ export default function AdminPage() {
                       Используйте массив объектов с полями: from, fromAirport,
                       to, toAirport, operatedBy, flightNumber, airplaneType,
                       departureTime, arrivalTime, flightDuration,
-                      numberOfTransfers, EconomPrice, businessPrice
+                      numberOfTransfers, economyPrice, businessPrice
                     </p>
                   </div>
                 </div>
