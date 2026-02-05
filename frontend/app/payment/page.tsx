@@ -18,7 +18,6 @@ export default function PaymentPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // ✅ Добавляем состояние для модального окна
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const [cardForm, setCardForm] = useState({
