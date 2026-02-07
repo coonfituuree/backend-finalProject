@@ -25,6 +25,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "https://backend-final-project-frontend.vercel.app",
+    // origin: "vizierairways.coonfituuree.dev",
     // origin: "http://localhost:3000",
     credentials: true, // 👈 разрешаем cookies
   }),

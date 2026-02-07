@@ -27,7 +27,7 @@ export const sendEmail = async (to, subject, text) => {
     subject,
     text,
   };
-  
+
   await new Promise((resolve, reject) => {
     transporter.sendMail(mailData, (err, info) => {
       if (err) {
@@ -40,5 +40,3 @@ export const sendEmail = async (to, subject, text) => {
     });
   });
 };
-
-export default transporter;
