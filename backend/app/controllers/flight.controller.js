@@ -14,7 +14,7 @@ export const getAllRoutes = async (req, res) => {
       data: flights,
     });
   } catch (err) {
-    console.error(error);
+    console.error(err);
     return res.status(500).json({
       success: false,
       message: "Server error",

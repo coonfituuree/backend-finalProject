@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { adminApi, AdminUser } from "@/shared/api/admin.api";
 import { Booking } from "@/shared/types/booking.types";
 import Link from "next/link";
+import Header from "@/features/Header/Header";
 
 type TabType = "users" | "bookings" | "add-flight";
 
@@ -16,7 +17,6 @@ const placeholders: Record<string, string> = {
   toAirportAbbreviation: "NQZ",
   flightNumber: "KC123",
 };
-
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<TabType>("users");
@@ -175,6 +175,7 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-[rgb(244,245,247)] py-12 px-4">
+      <Header />
       <div className="max-w-6xl mx-auto">
         <div className="bg-white rounded-2xl border border-gray-200 p-8 mb-6 shadow-sm">
           <div className="flex justify-between items-center">
@@ -475,7 +476,8 @@ export default function AdminPage() {
                         <div key={key}>
                           <label className="block text-[rgb(28,43,79)] font-semibold mb-2 text-sm">
                             {key === "from" && "Откуда"}
-                            {key === "fromAirport" && "Название аэропорта (откуда)"}
+                            {key === "fromAirport" &&
+                              "Название аэропорта (откуда)"}
                             {key === "fromAirportAbbreviation" &&
                               "Код аэропорта (откуда)"}
                             {key === "to" && "Куда"}

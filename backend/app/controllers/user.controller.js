@@ -8,7 +8,7 @@ export const getCurrentUser = async (req, res) => {
     const user = await userModel
       .findById(userId)
       .select(
-        "-password -verifyOtp -resetOtp -verifyOtpExpireAt -resetOtpExpireAt -__v"
+        "-password -verifyOtp -resetOtp -verifyOtpExpireAt -resetOtpExpireAt -__v",
       );
 
     if (!user) {
@@ -26,12 +26,12 @@ export const getCurrentUser = async (req, res) => {
 export const updateCurrentUser = async (req, res) => {
   const userId = req.user.id;
   const updateData = req.body;
-  
+
   try {
     const updatedUser = await userModel.findByIdAndUpdate(
       userId,
       { $set: updateData },
-      { new: true }
+      { new: true },
     );
 
     if (!updatedUser) {

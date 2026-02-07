@@ -12,39 +12,40 @@ type Destination = {
 
 const promoTop = [
   {
-    title: "Экономьте до 70%\nпри покупке\nбагажа онлайн",
-    subtitle: "Входит в пакеты Комфорт и Комфорт+",
+    title: "Save up to 70%\nwhen buying\nluggage online",
+    subtitle: "Included in Comfort and Comfort+ packages",
     img: "/welcome/promo-bag.jpg",
   },
   {
-    title: "Летите впервые?",
-    subtitle: "Ознакомьтесь с правилами регистрации и посадки до полёта",
+    title: "Flying for the first time?",
+    subtitle:
+      "Familiarize yourself with check-in and boarding rules before your flight",
     img: "/welcome/promo-first.jpg",
   },
   {
-    title: "Уже купили билет?",
+    title: "Already bought a ticket?",
     subtitle:
-      "Забронируйте трансфер из аэропорта заранее — надёжно, выгодно, без переплат",
+      "Book airport transfer in advance — reliable, cost-effective, no overpayment",
     img: "/welcome/promo-taxi.jpg",
   },
 ];
 
 const destinations: Destination[] = [
   {
-    title: "Сердце Имперетии",
-    priceFrom: "от 34 000 ₸",
-    subtitle: "Наши направления",
+    title: "Heart of the Empire",
+    priceFrom: "from 34,000 ₸",
+    subtitle: "Our destinations",
     img: "/welcome/dest-1.jpg",
   },
   {
-    title: "Столица дружбы",
-    priceFrom: "от 33 000 ₸",
+    title: "Capital of Friendship",
+    priceFrom: "from 33,000 ₸",
     subtitle: "",
     img: "/welcome/dest-2.jpg",
   },
   {
-    title: "Объятия Алтая",
-    priceFrom: "от 10 000 ₸",
+    title: "Embrace of Altai",
+    priceFrom: "from 10,000 ₸",
     subtitle: "",
     img: "/welcome/dest-3.jpg",
   },
@@ -67,13 +68,13 @@ export default function Welcome() {
       <div className="mt-12 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
         <div className="flex flex-col justify-center">
           <h2 className="text-3xl font-semibold text-[rgb(28,43,79)] leading-tight">
-            Время новых
+            Time for new
             <br />
-            приключений
+            adventures
           </h2>
 
           <button className="mt-4 text-left text-sm font-semibold text-[rgb(164,134,86)] hover:opacity-80 transition">
-            Наши направления →
+            Our destinations →
           </button>
         </div>
 
@@ -108,7 +109,7 @@ function PromoCard({
         </div>
         <div className="mt-2 text-sm text-gray-500">{subtitle}</div>
         <div className="mt-4 text-[rgb(164,134,86)] font-semibold">
-          Подробнее →
+          Learn more →
         </div>
       </div>
 
@@ -152,29 +153,28 @@ function NewsletterCard() {
   return (
     <div className="rounded-3xl overflow-hidden bg-gradient-to-br from-[#3557b7] to-[#1f3c87] text-white p-8">
       <h3 className="text-2xl font-semibold leading-snug">
-        Подпишитесь на
+        Subscribe to
         <br />
-        рассылки
+        our newsletter
       </h3>
 
       <p className="mt-3 text-white/80 text-sm max-w-md">
-        и узнавайте первыми о новых маршрутах и специальных предложениях.
+        and be the first to know about new routes and special offers.
       </p>
 
-        <input
-          className="w-full rounded-2xl mt-5 bg-white/15 placeholder-white/60 outline-none px-4 py-3"
-          placeholder="Email"
-        />
-        
+      <input
+        className="w-full rounded-2xl mt-5 bg-white/15 placeholder-white/60 outline-none px-4 py-3"
+        placeholder="Email"
+      />
 
       <p className="mt-5 text-xs text-white/70 max-w-lg">
-        Нажимая на кнопку «Подписаться», вы соглашаетесь на обработку ваших
-        персональных данных.
+        By clicking the "Subscribe" button, you consent to the processing of
+        your personal data.
       </p>
 
       <div className="mt-6">
         <button className="bg-white text-[#1f3c87] font-semibold px-6 py-3 rounded-2xl hover:opacity-90 transition">
-          Подписаться
+          Subscribe
         </button>
       </div>
     </div>
@@ -185,26 +185,30 @@ function AppCard() {
   return (
     <div className="rounded-3xl overflow-hidden bg-[#d6453a] text-white p-8 relative">
       <h3 className="text-2xl font-semibold leading-snug">
-        Мобильное
+        Mobile
         <br />
-        приложение
+        Application
       </h3>
 
       <p className="mt-3 text-white/85 text-sm max-w-md">
-        Бронируйте билеты быстро и легко с приложением Vizier Airways
+        Book tickets quickly and easily with the Vizier Airways app
       </p>
 
       <div className="mt-6 flex items-center gap-6">
         <div className="bg-white rounded-2xl p-3">
-          <Image src="/welcome/qr.png" alt="qr" width={100} height={100} className="w-[90px] h-[90px] bg-black/10 rounded-xl" />
+          <Image
+            src="/welcome/qr.png"
+            alt="qr"
+            width={100}
+            height={100}
+            className="w-[90px] h-[90px] bg-black/10 rounded-xl"
+          />
         </div>
 
         <p className="text-sm text-white/90 max-w-[220px]">
-          Для скачивания наведите камеру смартфона на QR-код
+          To download, point your smartphone camera at the QR code
         </p>
       </div>
-
-      
     </div>
   );
 }

@@ -6,8 +6,8 @@ import Container from "@/shared/ui/Container";
 import { Search } from "lucide-react";
 
 type SearchOptions = {
-  departureDate?: string; 
-  returnDate?: string; 
+  departureDate?: string;
+  returnDate?: string;
   passengers?: number;
   travelClass?: "economy" | "business";
 };
@@ -24,7 +24,6 @@ function SearchSection({ onSearch }: SearchSectionProps) {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
 
-  // NEW state
   const [departureDate, setDepartureDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [passengers, setPassengers] = useState<string>("1");
@@ -69,36 +68,37 @@ function SearchSection({ onSearch }: SearchSectionProps) {
 
         <div className="w-full flex flex-col gap-8 py-8">
           <div className="text-white text-4xl font-medium">
-            Добрый вечер, куда мы летим сегодня?
+            Good evening, where are we flying today?
           </div>
 
-          {/* FROM/TO + SEARCH button */}
-          <div className="flex flex-wrap gap-2 w-full">
-            <div className="flex flex-1 gap-2">
-              <div className="flex-1 bg-white px-3 py-4 rounded-l-2xl">
+          <div className="flex max-md:flex-col flex-wrap gap-2 w-full">
+            <div className="flex max-md:flex-col flex-1 gap-2">
+              <div className="flex-1 bg-white px-3 py-4 rounded-l-2xl max-md:rounded-2xl">
                 <label className="block text-sm font-medium text-gray-400">
-                  Откуда:
+                  From:
                 </label>
                 <input
                   className="w-full outline-none text-base py-2"
-                  placeholder="Страна, город или аэропорт"
+                  placeholder="Country, city or airport"
                   value={from}
                   onChange={(e) => setFrom(e.target.value)}
                 />
               </div>
-              <div className="flex-1 bg-white px-3 py-4 rounded-r-2xl">
-                <label className="block text-sm text-gray-400">Куда:</label>
+              <div className="flex-1 bg-white px-3 py-4 rounded-r-2xl max-md:rounded-2xl">
+                <label className="block text-sm text-gray-400">To: </label>
                 <input
                   className="w-full outline-none text-base py-2"
-                  placeholder="Страна, город или аэропорт"
+                  placeholder="Country, city or airport"
                   value={to}
                   onChange={(e) => setTo(e.target.value)}
                 />
               </div>
-              <div className="flex gap-8">
+              <div className="flex max-md:flex-col max-md:gap-2 gap-8">
                 <div className="flex gap-2 w-[320px]">
-                  <div className="flex-1 bg-white p-4 rounded-l-2xl">
-                    <label className="block text-sm text-gray-400">Туда</label>
+                  <div className="flex-1 bg-white p-4 rounded-l-2xl max-md:rounded-2xl">
+                    <label className="block text-sm text-gray-400">
+                      Departure Date
+                    </label>
                     <input
                       type="date"
                       className="w-full outline-none py-2"
@@ -106,9 +106,9 @@ function SearchSection({ onSearch }: SearchSectionProps) {
                       onChange={(e) => setDepartureDate(e.target.value)}
                     />
                   </div>
-                  <div className="flex-1 bg-white p-4 rounded-r-2xl">
+                  <div className="flex-1 bg-white p-4 rounded-r-2xl max-md:rounded-2xl">
                     <label className="block text-sm text-gray-400 ">
-                      Обратно
+                      Return Date
                     </label>
                     <input
                       type="date"
@@ -121,14 +121,8 @@ function SearchSection({ onSearch }: SearchSectionProps) {
                 </div>
 
                 <div className="w-50 bg-white p-4 rounded-2xl">
-                  <label className="block text-sm text-gray-400">
-                    Class
-                  </label>
+                  <label className="block text-sm text-gray-400">Class</label>
 
-                  {/* input EXACT as you wrote + functional */}
-                  
-
-                  {/* class selector (functional, below input) */}
                   <div className="mt-2 flex gap-2 items-center justify-center">
                     <button
                       type="button"
@@ -163,10 +157,8 @@ function SearchSection({ onSearch }: SearchSectionProps) {
             </button>
           </div>
 
-          {/* ✅ EXACT block you sent + functionality */}
-
           <div className="flex justify-end text-white font-medium">
-            Билеты действительны до {time}
+            Tickets are valid until {time}
           </div>
         </div>
       </Container>

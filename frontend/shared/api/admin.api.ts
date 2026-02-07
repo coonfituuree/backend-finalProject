@@ -16,7 +16,7 @@ export interface AdminUser {
 export interface Flight {
   _id: string;
   from: string;
-  fromAirport: string,
+  fromAirport: string;
   fromAirportAbbreviation: string;
   to: string;
   toAirport: string;
@@ -50,8 +50,7 @@ export const adminApi = {
   addFlight: (data: Omit<Flight, "_id" | "createdAt">) =>
     apiClient.post<AdminResponse<Flight>>("/admin/flight/add", data),
 
-  addFlightsBulk: (data: any[]) =>
-    apiClient.post<AdminResponse<Flight[]>>("/admin/flight/add/bulk", {
-      flights: data,
-    }),
+  addFlightsBulk: (
+    data: Omit<Flight, "_id" | "createdAt">[], // Fixed: changed parameter type
+  ) => apiClient.post<AdminResponse<any>>("/admin/flight/add/bulk", data), // Fixed: sending array directly
 };

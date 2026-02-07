@@ -8,7 +8,7 @@ const setAuthCookie = (res, token) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-    maxAge: 24 * 60 * 60 * 1000, 
+    maxAge: 24 * 60 * 60 * 1000,
   });
 };
 
@@ -35,9 +35,10 @@ export const register = async (req, res) => {
   try {
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
-      return res
-        .status(409)
-        .json({ success: false, message: "User already exists" });
+      return res.status(409).json({
+        success: false,
+        message: "User with this email already exists",
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -85,16 +86,18 @@ export const login = async (req, res) => {
     const user = await userModel.findOne(username ? { username } : { email });
 
     if (!user) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid credentials" });
+      return res.status(400).json({
+        success: false,
+        message: "Invalid credentials",
+      });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid credentials" });
+      return res.status(400).json({
+        success: false,
+        message: "Invalid credentials",
+      });
     }
 
     const token = signToken(user);

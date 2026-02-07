@@ -9,10 +9,10 @@ class ApiClient {
 
   private async request<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
   ): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`;
-    
+
     const config: RequestInit = {
       ...options,
       credentials: "include",
@@ -27,7 +27,13 @@ class ApiClient {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Произошла ошибка");
+        // If there are validation errors, join them into one message
+        const errorMessage =
+          data.message ||
+          (Array.isArray(data.errors)
+            ? data.errors.join(", ")
+            : "An error occurred");
+        throw new Error(errorMessage);
       }
 
       return data;
@@ -35,7 +41,7 @@ class ApiClient {
       if (error instanceof Error) {
         throw error;
       }
-      throw new Error("Произошла неизвестная ошибка");
+      throw new Error("Unknown error occurred");
     }
   }
 

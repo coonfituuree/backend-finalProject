@@ -34,7 +34,7 @@ export const createBooking = async (req, res) => {
     ) {
       return res.status(400).json({
         success: false,
-        message: "Invalid price for selected cabinClass",
+        message: "Invalid price for selected cabin class",
       });
     }
 
@@ -143,8 +143,8 @@ export const getAllBookings = async (req, res) => {
         .json({ success: true, message: "Bookings aren't available" });
     }
 
-    res.json({ success: true, message: "All data: ", data: allBookings });
+    res.json({ success: true, message: "Все данные: ", data: allBookings });
   } catch (err) {
-    res.status(500).json({ success: false, message: "Server Error" });
+    res.status(500).json({ success: false, message: "Ошибка сервера" });
   }
 };

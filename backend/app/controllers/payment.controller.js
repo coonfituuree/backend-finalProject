@@ -17,7 +17,7 @@ const buildTicketText = ({ booking, flight }) => {
     `Duration: ${flight.flightDuration}\n` +
     `Transfers: ${flight.numberOfTransfers}\n\n` +
     `Cabin: ${booking.cabinClass}\n` +
-    `Passengers: ${booking.passengers.map(p => `${p.firstName} ${p.lastName}`).join(", ")}\n\n` +
+    `Passengers: ${booking.passengers.map((p) => `${p.firstName} ${p.lastName}`).join(", ")}\n\n` +
     `Total paid: ${booking.totalPrice} KZT\n\n` +
     `Seat selection is available at the airport during check-in.\n` +
     `Thank you for choosing Vizier Airways!`
@@ -30,19 +30,28 @@ export const payBooking = async (req, res) => {
 
   try {
     if (!isValidLuhn(cardNumber)) {
-      return res.status(400).json({ success: false, message: "Invalid card number" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid card number" });
     }
     if (!isCardNotExpired(expMonth, expYear)) {
       return res.status(400).json({ success: false, message: "Card expired" });
     }
 
-    const booking = await bookingModel.findOne({ _id: bookingId, user: userId });
+    const booking = await bookingModel.findOne({
+      _id: bookingId,
+      user: userId,
+    });
     if (!booking) {
-      return res.status(404).json({ success: false, message: "Booking not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Booking not found" });
     }
 
     if (booking.status === "confirmed") {
-      return res.status(400).json({ success: false, message: "Booking already confirmed" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Booking already confirmed" });
     }
 
     const payment = await paymentModel.create({
@@ -81,7 +90,10 @@ export const payBooking = async (req, res) => {
     });
   } catch (err) {
     if (err?.code === 11000) {
-      return res.status(400).json({ success: false, message: "Payment already exists for this booking" });
+      return res.status(400).json({
+        success: false,
+        message: "Payment already exists for this booking",
+      });
     }
     return res.status(500).json({ success: false, message: err.message });
   }

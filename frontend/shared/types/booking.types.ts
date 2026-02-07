@@ -13,7 +13,7 @@ export interface BookingUser {
 
 export interface Booking {
   _id: string;
-  user: BookingUser | null; // ✅ было string
+  user: BookingUser | null;
   flight: Flight | null;
   passengers: Passenger[];
   cabinClass: "economy" | "business";
@@ -23,8 +23,14 @@ export interface Booking {
   payment?: string;
   pnr: string;
   email: string;
-  createdAt: string; // лучше string, потому что из API приходит строка
-  updatedAt: string; // лучше string
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateBookingRequest {
+  flightId: string;
+  cabinClass: "economy" | "business";
+  passengers: Passenger[];
 }
 
 export interface BookingResponse {

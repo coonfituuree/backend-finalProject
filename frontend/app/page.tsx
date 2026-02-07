@@ -6,6 +6,7 @@ import { Flight } from "@/shared/types/flight.types";
 import Container from "@/shared/ui/Container";
 import { FlightResults } from "@/features/FlightResults/FlightResults";
 import Welcome from "@/widgets/Welcome";
+import FAQ from "@/widgets/FAQ/FAQ";
 
 export default function Home() {
   const [searchOptions, setSearchOptions] = useState<{
@@ -36,7 +37,6 @@ export default function Home() {
   return (
     <main className="">
       <SearchSection onSearch={handleSearch} />
-
       <Container>
         <div className="flex flex-col items-center justify-center py-12">
           {error && (
@@ -53,12 +53,16 @@ export default function Home() {
           )}
 
           {!loading && flights.length > 0 && (
-            <FlightResults flights={flights} initialDate={searchOptions.departureDate}/>
+            <FlightResults
+              flights={flights}
+              initialDate={searchOptions.departureDate}
+            />
           )}
 
           {!loading && flights.length === 0 && <Welcome />}
         </div>
       </Container>
+      {!loading && flights.length === 0 && <FAQ />}
     </main>
   );
 }

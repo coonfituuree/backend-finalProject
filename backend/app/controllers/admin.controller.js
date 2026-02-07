@@ -40,9 +40,9 @@ export const postFlight = async (req, res) => {
       from: req.body.from,
       fromAirport: req.body.fromAirport,
       fromAirportAbbreviation: req.body.fromAirportAbbreviation,
-      to: req.body.to,  
+      to: req.body.to,
       toAirport: req.body.toAirport,
-      toAirportAbbreviation: req.body.fromAirportAbbreviation,
+      toAirportAbbreviation: req.body.toAirportAbbreviation,
       operatedBy: req.body.operatedBy,
       flightNumber: req.body.flightNumber,
       airplaneType: req.body.airplaneType,
@@ -68,14 +68,16 @@ export const postFlight = async (req, res) => {
 
 export const postFlightsBulk = async (req, res) => {
   try {
-    if (!Array.isArray(req.body)) {
+    const flights = req.body; // Changed: expect array directly
+
+    if (!Array.isArray(flights)) {
       return res.status(400).json({
         success: false,
         message: "Request body must be an array of flights",
       });
     }
 
-    if (req.body.length === 0) {
+    if (flights.length === 0) {
       return res.status(400).json({
         success: false,
         message: "Flights array is empty",
@@ -90,9 +92,9 @@ export const postFlightsBulk = async (req, res) => {
       "flightNumber",
     ];
 
-    for (let i = 0; i < req.body.length; i++) {
+    for (let i = 0; i < flights.length; i++) {
       for (const f of required) {
-        if (!req.body[i]?.[f]) {
+        if (!flights[i]?.[f]) {
           return res.status(400).json({
             success: false,
             message: `Missing field "${f}" in item #${i + 1}`,
@@ -101,15 +103,15 @@ export const postFlightsBulk = async (req, res) => {
       }
     }
 
-    const result = await flightsModel.collection.insertMany(req.body, {
+    const result = await flightsModel.insertMany(flights, {
       ordered: false,
     });
 
     return res.status(201).json({
       success: true,
       message: "Flights created successfully",
-      insertedCount: result.insertedCount,
-      insertedIds: Object.values(result.insertedIds || {}),
+      insertedCount: result.length,
+      data: result,
     });
   } catch (err) {
     return res.status(500).json({
@@ -119,12 +121,13 @@ export const postFlightsBulk = async (req, res) => {
   }
 };
 
-
 export const getAllFlights = async (req, res) => {
   try {
     const flights = await flightsModel.find();
     if (flights.length === 0) {
-      return res.status(404).json({ success: false, message: "No flights found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "No flights found" });
     }
 
     return res.status(200).json({

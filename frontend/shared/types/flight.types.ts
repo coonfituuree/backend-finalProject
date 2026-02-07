@@ -11,7 +11,7 @@ export interface Flight {
   departureDate: string;
   arrivalDate: string;
   airplaneType: string;
-  departureTime: string | null;
+  departureTime: string;
   arrivalTime: string;
   flightDuration: string;
   numberOfTransfers: string;

@@ -51,7 +51,7 @@ const Auth = () => {
       const result = await authApi.login(loginForm);
 
       if (!result.success) {
-        return setError("Ошибка входа");
+        throw new Error(result.message || "Ошибка входа");
       }
 
       const me = await userApi.getCurrentUser();
@@ -60,7 +60,6 @@ const Auth = () => {
         throw new Error("Cannot load current user");
       }
 
-      
       loginStore({
         id: me.user._id,
         username: me.user.username,
@@ -85,13 +84,22 @@ const Auth = () => {
     try {
       const result = await authApi.register(registerForm);
 
-      const u = (result as any)?.data?.user;
+      if (!result.success) {
+        throw new Error(result.message || "Ошибка регистрации");
+      }
 
-      const userToStore = u
-        ? { id: u.id ?? u._id, username: u.username, email: u.email }
-        : { username: registerForm.username, email: registerForm.email };
+      // После успешной регистрации получаем данные текущего юзера
+      const me = await userApi.getCurrentUser();
 
-      loginStore(userToStore);
+      if (!me?.user) {
+        throw new Error("Cannot load current user");
+      }
+
+      loginStore({
+        id: me.user._id,
+        username: me.user.username,
+        email: me.user.email,
+      });
 
       setSuccess("Регистрация успешна!");
       router.replace("/");

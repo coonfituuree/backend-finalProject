@@ -44,7 +44,7 @@ function Accordion({
     <div className={cn("overflow-hidden", parentClassName)}>
       <div
         className={cn(
-          "rounded-3xl flex justify-between items-center px-6 py-5 select-none cursor-pointer",
+          "rounded-2xl flex justify-between items-center px-6 py-5 select-none cursor-pointer",
           "bg-white",
           className,
         )}
