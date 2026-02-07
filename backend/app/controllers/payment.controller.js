@@ -1,7 +1,7 @@
 import bookingModel from "../models/booking.model.js";
 import paymentModel from "../models/payment.model.js";
 import flightsModel from "../models/flight.model.js";
-import transporter from "../config/nodemailer.js";
+import { sendEmail } from "../config/nodemailer.js";
 import { isValidLuhn, isCardNotExpired } from "../utils/cardValidation.js";
 
 const buildTicketText = ({ booking, flight }) => {
@@ -27,24 +27,32 @@ export const payBooking = async (req, res) => {
   try {
     // 1. Валидация карты
     if (!isValidLuhn(cardNumber)) {
-      return res.status(400).json({ success: false, message: "Invalid card number" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid card number" });
     }
     if (!isCardNotExpired(expMonth, expYear)) {
       return res.status(400).json({ success: false, message: "Card expired" });
     }
 
     // 2. Поиск бронирования (с подгрузкой данных юзера для email)
-    const booking = await bookingModel.findOne({
-      _id: bookingId,
-      user: userId,
-    }).populate('user');
+    const booking = await bookingModel
+      .findOne({
+        _id: bookingId,
+        user: userId,
+      })
+      .populate("user");
 
     if (!booking) {
-      return res.status(404).json({ success: false, message: "Booking not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Booking not found" });
     }
 
     if (booking.status === "confirmed") {
-      return res.status(400).json({ success: false, message: "Booking already confirmed" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Booking already confirmed" });
     }
 
     // 3. Создание платежа
@@ -68,20 +76,16 @@ export const payBooking = async (req, res) => {
 
     if (flight && recipientEmail) {
       const text = buildTicketText({ booking, flight });
-
-      await transporter.sendMail({
-        from: process.env.SENDER_EMAIL,
-        to: recipientEmail,
-        subject: `Your E-Ticket (PNR: ${booking.pnr})`,
-        text,
-      })
-      .then(() => console.log(`[Email] Ticket sent to ${recipientEmail}`))
-      .catch((err) => console.error("[Email Error] Failed to send ticket:", err.message));
-    } else {
-      console.warn("[Email Warning] Could not send email: flight or email missing", { 
-        hasFlight: !!flight, 
-        hasEmail: !!recipientEmail 
-      });
+      try {
+        await sendEmail(
+          recipientEmail,
+          `Your E-Ticket (PNR: ${booking.pnr})`,
+          text,
+        );
+        console.log(`[Email] Ticket sent to ${recipientEmail}`);
+      } catch (e) {
+        console.error("[Email Error] Failed to send ticket:", e?.message || e);
+      }
     }
 
     return res.json({
@@ -91,7 +95,6 @@ export const payBooking = async (req, res) => {
       paymentId: payment._id,
       pnr: booking.pnr,
     });
-
   } catch (err) {
     console.error("CRITICAL_PAYMENT_ERROR:", err);
     if (err?.code === 11000) {
