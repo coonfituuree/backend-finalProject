@@ -46,4 +46,19 @@ app.use("/api/bookings", bookingRouter);
 app.use("/api/payments", paymentRouter);
 app.use("/api/admin", adminRouter);
 
+
+app.get("/api/test-email", async (req, res) => {
+  try {
+    await transporter.sendMail({
+      from: process.env.SENDER_EMAIL,
+      to: process.env.SENDER_EMAIL, // отправь самому себе
+      subject: "Test Railway Email",
+      text: "If you see this, nodemailer works!"
+    });
+    res.json({ success: true, message: "Email sent!" });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 app.listen(PORT, () => console.log(`Server running at ${PORT}`));
