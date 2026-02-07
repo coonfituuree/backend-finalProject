@@ -24,7 +24,8 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://backend-final-project-frontend.vercel.app", // 👈 твой фронт
+    origin: "https://backend-final-project-frontend.vercel.app",
+    // origin: "http://localhost:3000",
     credentials: true, // 👈 разрешаем cookies
   }),
 );

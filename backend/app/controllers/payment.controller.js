@@ -59,20 +59,17 @@ export const payBooking = async (req, res) => {
       status: true,
     });
 
-    // 4. Обновление статуса брони
     booking.status = "confirmed";
     booking.payment = payment._id;
     await booking.save();
 
-    // 5. Асинхронная отправка почты (НЕ блокирует ответ клиенту)
     const flight = await flightsModel.findById(booking.flight);
     const recipientEmail = booking.email || booking.user?.email;
 
     if (flight && recipientEmail) {
       const text = buildTicketText({ booking, flight });
 
-      // Запускаем без await, чтобы не ждать 2 минуты ответа от SMTP
-      transporter.sendMail({
+      await transporter.sendMail({
         from: process.env.SENDER_EMAIL,
         to: recipientEmail,
         subject: `Your E-Ticket (PNR: ${booking.pnr})`,
@@ -87,7 +84,6 @@ export const payBooking = async (req, res) => {
       });
     }
 
-    // 6. Мгновенный ответ клиенту
     return res.json({
       success: true,
       message: "Payment successful. Ticket is being sent to your email.",
