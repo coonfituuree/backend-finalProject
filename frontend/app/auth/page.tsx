@@ -88,7 +88,6 @@ const Auth = () => {
         throw new Error(result.message || "Ошибка регистрации");
       }
 
-      // После успешной регистрации получаем данные текущего юзера
       const me = await userApi.getCurrentUser();
 
       if (!me?.user) {

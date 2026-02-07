@@ -25,7 +25,6 @@ export const payBooking = async (req, res) => {
   const { bookingId, cardNumber, expMonth, expYear } = req.body;
 
   try {
-    // 1. Валидация карты
     if (!isValidLuhn(cardNumber)) {
       return res
         .status(400)
@@ -35,7 +34,6 @@ export const payBooking = async (req, res) => {
       return res.status(400).json({ success: false, message: "Card expired" });
     }
 
-    // 2. Поиск бронирования (с подгрузкой данных юзера для email)
     const booking = await bookingModel
       .findOne({
         _id: bookingId,
@@ -55,7 +53,6 @@ export const payBooking = async (req, res) => {
         .json({ success: false, message: "Booking already confirmed" });
     }
 
-    // 3. Создание платежа
     const payment = await paymentModel.create({
       booking: booking._id,
       user: userId,

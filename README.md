@@ -124,7 +124,7 @@ Vizier Airways/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-repo/vizier-airways.git
+git clone https://github.com/coonfituuree/backend-finalProject
 cd vizier-airways
 ```
 
@@ -182,9 +182,9 @@ FRONTEND_URL=http://localhost:3000
 3. Generate a new app password
 4. Use this app password in `SMTP_PASSWORD`
 
-### Frontend (.env.local)
+### Frontend (.env)
 
-Create a `.env.local` file in the `frontend/` directory:
+Create a `.env` file in the `frontend/` directory:
 
 ```env
 # Backend API URL
@@ -477,67 +477,58 @@ The application uses 4 main MongoDB collections:
 ### 1. Home Page - Flight Search
 *(Screenshot: Home page with search form showing departure/arrival cities, dates, and class selection)*
 
-![Home Page](screenshots/home-page.png)
+![Home Page](docs/home.png)
 
 ### 2. Flight Results
 *(Screenshot: List of available flights with prices, times, and booking buttons)*
 
-![Flight Results](screenshots/flight-results.png)
+![Flight Results](docs/flights.png)
 
 ### 3. Login / Register Page
 *(Screenshot: Authentication page with login and register forms)*
 
-![Auth Page](screenshots/auth-page.png)
+![Auth Page](docs/auth.png)
 
 ### 4. Booking Page
 *(Screenshot: Booking form with passenger details and cabin class selection)*
 
-![Booking Page](screenshots/booking-page.png)
+![Booking Page](docs/booking.png)
 
 ### 5. Payment Page
 *(Screenshot: Payment form with card details and booking summary)*
 
-![Payment Page](screenshots/payment-page.png)
+![Payment Page](docs/payment.png)
 
 ### 6. Payment Success Modal
 *(Screenshot: Success modal showing PNR, flight details, and confirmation)*
 
-![Success Modal](screenshots/success-modal.png)
+![Success Modal](docs/success.png)
 
 ### 7. My Bookings Page
 *(Screenshot: List of user's bookings with statuses and details)*
 
-![My Bookings](screenshots/my-bookings.png)
+![My Bookings](docs/mybooking.png)
 
 ### 8. User Profile Page
 *(Screenshot: User profile with personal information and edit option)*
 
-![Profile Page](screenshots/profile-page.png)
+![Profile Page](docs/profile.png)
 
 ### 9. Admin Panel - Users
 *(Screenshot: Admin view of all users with roles and verification status)*
 
-![Admin Users](screenshots/admin-users.png)
+![Admin Users](docs/admin.png)
 
 ### 10. Admin Panel - Add Flight
 *(Screenshot: Admin form for adding single or multiple flights)*
 
-![Admin Add Flight](screenshots/admin-add-flight.png)
+![Admin Add Flight](docs/addbookings.png)
 
 ### 11. Admin Panel - All Bookings
 *(Screenshot: Admin view of all bookings across all users)*
 
-![Admin Bookings](screenshots/admin-bookings.png)
+![Admin Bookings](docs/allbookings.png)
 
-### 12. FAQ Page
-*(Screenshot: FAQ accordion with common questions and answers)*
-
-![FAQ Page](screenshots/faq-page.png)
-
-### 13. Mobile Responsive View
-*(Screenshot: Mobile version of the application)*
-
-![Mobile View](screenshots/mobile-view.png)
 
 ---
 
@@ -591,7 +582,7 @@ To test admin features, create an admin user by:
 
 ## 🚀 Deployment
 
-### Backend Deployment (Render/Railway)
+### Backend Deployment (Railway)
 
 1. Create a new web service
 2. Connect your GitHub repository
@@ -612,12 +603,9 @@ To test admin features, create an admin user by:
    - `NEXT_PUBLIC_API_URL` (your deployed backend URL)
 5. Deploy
 
-### Database (MongoDB Atlas)
+### Database (MongoDB)
 
-1. Create a free cluster at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-2. Set up database user and password
-3. Whitelist IP addresses (0.0.0.0/0 for development)
-4. Get connection string and add to backend `.env`
+1. Database located on Railway servers
 
 ---
 
@@ -625,13 +613,8 @@ To test admin features, create an admin user by:
 
 List all team members who contributed to this project:
 
-1. **[Your Name]** - Team Lead & Full Stack Developer
-2. **[Member 2]** - Frontend Developer
-3. **[Member 3]** - Backend Developer
-4. **[Member 4]** - Database & DevOps
-5. **[Member 5]** - UI/UX & Documentation
+1. **[Galym Bartay]** - Team Lead & Full Stack Developer
 
-*(Update with actual names and roles)*
 
 ---
 
@@ -655,15 +638,6 @@ List all team members who contributed to this project:
 This project is created for educational purposes as part of a final project assignment.
 
 **MIT License** - Feel free to use and modify for learning purposes.
-
----
-
-## 📞 Support
-
-For questions or issues:
-- **Email**: support@vizierairways.com
-- **Documentation**: See `backend/README.md` for detailed API docs
-- **Frontend Guide**: See `frontend/FRONTEND_README.md`
 
 ---
 

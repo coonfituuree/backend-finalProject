@@ -28,7 +28,6 @@ const signToken = (user) =>
 const generateOtp6 = () => String(Math.floor(100000 + Math.random() * 900000));
 
 const logMailError = (context, err) => {
-  // Для SMTP важно видеть response/code/command
   console.error(`[MAIL ERROR] ${context}`, {
     message: err?.message,
     code: err?.code,
@@ -66,7 +65,6 @@ export const register = async (req, res) => {
     const token = signToken(user);
     setAuthCookie(res, token);
 
-    // Welcome email (не ломаем регистрацию, если почта упала)
     try {
       await sendEmail(
         email,
@@ -157,7 +155,6 @@ export const sendVerifyOtp = async (req, res) => {
       );
     } catch (mailErr) {
       logMailError("verify otp", mailErr);
-      // Можно вернуть 500, если хочешь строго, но обычно OTP отправка критична:
       return res
         .status(500)
         .json({ success: false, message: "Failed to send OTP email" });

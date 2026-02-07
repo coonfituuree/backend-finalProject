@@ -68,7 +68,7 @@ export const postFlight = async (req, res) => {
 
 export const postFlightsBulk = async (req, res) => {
   try {
-    const flights = req.body; // Changed: expect array directly
+    const flights = req.body; 
 
     if (!Array.isArray(flights)) {
       return res.status(400).json({
