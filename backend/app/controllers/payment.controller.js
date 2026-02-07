@@ -11,15 +11,11 @@ const buildTicketText = ({ booking, flight }) => {
     `Flight details:\n` +
     `Route: ${flight.fromAirport} → ${flight.toAirport}\n` +
     `Flight: ${flight.operatedBy} ${flight.flightNumber}\n` +
-    `Aircraft: ${flight.airplaneType}\n` +
     `Departure: ${flight.departureTime}\n` +
-    `Arrival: ${flight.arrivalTime}\n` +
-    `Duration: ${flight.flightDuration}\n` +
-    `Transfers: ${flight.numberOfTransfers}\n\n` +
+    `Arrival: ${flight.arrivalTime}\n\n` +
     `Cabin: ${booking.cabinClass}\n` +
     `Passengers: ${booking.passengers.map((p) => `${p.firstName} ${p.lastName}`).join(", ")}\n\n` +
     `Total paid: ${booking.totalPrice} KZT\n\n` +
-    `Seat selection is available at the airport during check-in.\n` +
     `Thank you for choosing Vizier Airways!`
   );
 };
@@ -29,31 +25,29 @@ export const payBooking = async (req, res) => {
   const { bookingId, cardNumber, expMonth, expYear } = req.body;
 
   try {
+    // 1. Валидация карты
     if (!isValidLuhn(cardNumber)) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid card number" });
+      return res.status(400).json({ success: false, message: "Invalid card number" });
     }
     if (!isCardNotExpired(expMonth, expYear)) {
       return res.status(400).json({ success: false, message: "Card expired" });
     }
 
+    // 2. Поиск бронирования (с подгрузкой данных юзера для email)
     const booking = await bookingModel.findOne({
       _id: bookingId,
       user: userId,
-    });
+    }).populate('user');
+
     if (!booking) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Booking not found" });
+      return res.status(404).json({ success: false, message: "Booking not found" });
     }
 
     if (booking.status === "confirmed") {
-      return res
-        .status(400)
-        .json({ success: false, message: "Booking already confirmed" });
+      return res.status(400).json({ success: false, message: "Booking already confirmed" });
     }
 
+    // 3. Создание платежа
     const payment = await paymentModel.create({
       booking: booking._id,
       user: userId,
@@ -65,30 +59,45 @@ export const payBooking = async (req, res) => {
       status: true,
     });
 
+    // 4. Обновление статуса брони
     booking.status = "confirmed";
     booking.payment = payment._id;
     await booking.save();
 
+    // 5. Асинхронная отправка почты (НЕ блокирует ответ клиенту)
     const flight = await flightsModel.findById(booking.flight);
-    if (flight) {
+    const recipientEmail = booking.email || booking.user?.email;
+
+    if (flight && recipientEmail) {
       const text = buildTicketText({ booking, flight });
 
-      await transporter.sendMail({
+      // Запускаем без await, чтобы не ждать 2 минуты ответа от SMTP
+      transporter.sendMail({
         from: process.env.SENDER_EMAIL,
-        to: booking.email,
+        to: recipientEmail,
         subject: `Your E-Ticket (PNR: ${booking.pnr})`,
         text,
+      })
+      .then(() => console.log(`[Email] Ticket sent to ${recipientEmail}`))
+      .catch((err) => console.error("[Email Error] Failed to send ticket:", err.message));
+    } else {
+      console.warn("[Email Warning] Could not send email: flight or email missing", { 
+        hasFlight: !!flight, 
+        hasEmail: !!recipientEmail 
       });
     }
 
+    // 6. Мгновенный ответ клиенту
     return res.json({
       success: true,
-      message: "Payment successful. Ticket sent to email.",
+      message: "Payment successful. Ticket is being sent to your email.",
       bookingId: booking._id,
       paymentId: payment._id,
       pnr: booking.pnr,
     });
+
   } catch (err) {
+    console.error("CRITICAL_PAYMENT_ERROR:", err);
     if (err?.code === 11000) {
       return res.status(400).json({
         success: false,
