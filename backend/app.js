@@ -35,6 +35,8 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
+app.set("trust proxy", 1);
+
 app.get("/", (req, res) => res.send("main page"));
 
 app.use("/api/auth", authRouter);
